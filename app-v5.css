@@ -42,3 +42,11 @@
 .word{display:flex!important;align-items:baseline!important;gap:6px!important;white-space:nowrap!important;word-spacing:0!important;letter-spacing:0!important}
 .word>span,.word>strong,.word>mark{display:block!important;margin:0!important;padding:0!important}
 @media(max-width:720px){.word{display:flex!important;align-items:baseline!important;gap:3px!important;letter-spacing:-.15px!important}.word>span,.word>strong,.word>mark{display:block!important;margin:0!important;padding:0!important}}
+
+/* final compact brand lock — words read as one name */
+.word{display:flex!important;align-items:baseline!important;gap:2px!important;white-space:nowrap!important}
+.word>span,.word>strong,.word>mark{display:block!important;margin:0!important;padding:0!important;letter-spacing:-.45px!important}
+@media(max-width:720px){
+ .word{gap:1px!important}
+ .word>span,.word>strong,.word>mark{letter-spacing:-.35px!important}
+}
