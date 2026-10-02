@@ -28,4 +28,4 @@ main .card:nth-of-type(3),.home-tile:nth-child(3){animation-delay:.1s}
 .home-head h1::after{content:"👋";display:inline-block;margin-left:7px;transform-origin:70% 75%;animation:mytvWave 1.5s ease-in-out .35s 2}
 @media(prefers-reduced-motion:reduce){.home-head h1::after{animation:none}}
 /* v6.3.17: persistent Home greeting hand */
-.home-head h1::before{content:'👋 ';display:inline-block;margin-right:.18em}
+.home-head h1::before{content:none!important}.home-head h1::after{content:' 👋';display:inline-block;margin-left:.18em}
