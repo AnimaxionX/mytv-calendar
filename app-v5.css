@@ -132,3 +132,23 @@
  }
  .logo>em,.logo>em:before,.logo>em:after{display:none!important;content:none!important}
 }
+
+/* v5.6 screenshot correction — unmistakably horizontal calendar icon */
+@media(max-width:720px){
+ .brandwrap{gap:10px!important}
+ .logo{
+   width:52px!important;height:30px!important;
+   min-width:52px!important;min-height:30px!important;max-height:30px!important;
+   border:3px solid var(--b)!important;border-radius:3px!important;
+   background:#fff!important;
+ }
+ .logo>b{left:0!important;right:0!important;top:3px!important;height:5px!important}
+ .logo>i{top:-6px!important;width:5px!important;height:8px!important;border-radius:2px!important}
+ .logo .o{left:10px!important}.logo .p{right:10px!important}
+ .logo>span{
+   position:absolute!important;left:0!important;right:0!important;top:8px!important;bottom:0!important;
+   padding:0!important;font-size:12px!important;line-height:1!important;
+   display:flex!important;align-items:center!important;justify-content:center!important;
+ }
+ .logo>em,.logo>em:before,.logo>em:after{display:none!important;content:none!important}
+}
