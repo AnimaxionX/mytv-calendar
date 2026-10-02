@@ -187,3 +187,16 @@
  .logo>em:before{left:8px!important;transform:rotate(45deg)!important}
  .logo>em:after{right:8px!important;transform:rotate(-45deg)!important}
 }
+
+/* v5.8 optical play centering — match desktop reference */
+@media(max-width:720px){
+ .logo>span{
+   top:9px!important;
+   bottom:2px!important;
+   padding:0 0 2px 1px!important;
+   display:flex!important;
+   align-items:center!important;
+   justify-content:center!important;
+   line-height:1!important;
+ }
+}
