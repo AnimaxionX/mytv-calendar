@@ -1,0 +1,10 @@
+{
+  "name": "MyTV Calendar",
+  "short_name": "MyTV Calendar",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2f98ef",
+  "description": "Stay updated with the shows you love."
+}
