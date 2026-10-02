@@ -152,3 +152,38 @@
  }
  .logo>em,.logo>em:before,.logo>em:after{display:none!important;content:none!important}
 }
+
+/* v5.7 MATCH DESKTOP REFERENCE — same TV/calendar hybrid proportions */
+@media(max-width:720px){
+ .brandwrap{gap:12px!important}
+ .logo{
+   width:50px!important;height:42px!important;
+   min-width:50px!important;min-height:42px!important;max-height:42px!important;
+   border:4px solid var(--b)!important;
+   border-radius:0!important;background:#fff!important;
+   overflow:visible!important;
+ }
+ .logo>b{
+   display:block!important;left:0!important;right:0!important;
+   top:5px!important;height:6px!important;background:var(--y)!important;
+ }
+ .logo>i{
+   display:block!important;top:-8px!important;width:5px!important;height:11px!important;
+   border-radius:0!important;z-index:3!important;
+ }
+ .logo .o{left:8px!important;background:var(--o)!important}
+ .logo .p{right:8px!important;background:var(--p)!important}
+ .logo>span{
+   position:absolute!important;left:0!important;right:0!important;
+   top:11px!important;bottom:0!important;padding:0!important;
+   display:flex!important;align-items:center!important;justify-content:center!important;
+   color:var(--b)!important;font-size:16px!important;line-height:1!important;
+ }
+ .logo>em{display:block!important}
+ .logo>em:before,.logo>em:after{
+   content:""!important;display:block!important;position:absolute!important;
+   bottom:-8px!important;width:4px!important;height:8px!important;background:var(--p)!important;
+ }
+ .logo>em:before{left:8px!important;transform:rotate(45deg)!important}
+ .logo>em:after{right:8px!important;transform:rotate(-45deg)!important}
+}
