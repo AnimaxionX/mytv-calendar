@@ -15,3 +15,7 @@
  .word strong{margin-right:6px!important}
  .brandwrap small{margin-top:5px!important}
 }
+
+/* center play icon identically in calendar logo at every size */
+.logo>span{inset:0!important;display:flex!important;align-items:center!important;justify-content:center!important;padding-top:8px!important;line-height:1!important;text-align:center!important;transform:none!important}
+@media(max-width:720px){.logo>span{inset:0!important;padding-top:5px!important;font-size:17px!important;line-height:1!important;display:flex!important;align-items:center!important;justify-content:center!important}}
