@@ -37,3 +37,8 @@
 .word strong{display:inline!important;margin:0!important;padding:0!important}
 .word mark{display:inline!important;margin:0!important;padding:0!important}
 @media(max-width:720px){.word{display:block!important;white-space:nowrap!important;letter-spacing:-.15px!important}.word strong,.word mark{display:inline!important;margin:0!important;padding:0!important}}
+
+/* exact compact wordmark: control every gap, no HTML whitespace */
+.word{display:flex!important;align-items:baseline!important;gap:6px!important;white-space:nowrap!important;word-spacing:0!important;letter-spacing:0!important}
+.word>span,.word>strong,.word>mark{display:block!important;margin:0!important;padding:0!important}
+@media(max-width:720px){.word{display:flex!important;align-items:baseline!important;gap:3px!important;letter-spacing:-.15px!important}.word>span,.word>strong,.word>mark{display:block!important;margin:0!important;padding:0!important}}
