@@ -1,0 +1,22 @@
+name: Package MyTV Calendar
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/package.yml'
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare package
+        run: |
+          mkdir package
+          cp index.html app-v6.css app-v6.js manifest.webmanifest sw.js build-version.txt desktop-mobile.css desktop-parity.css package/
+          mkdir -p package/push/onesignal
+          cp push/onesignal/OneSignalSDKWorker.js package/push/onesignal/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MyTV-Calendar-V6.1.9-OneSignal-Push
+          path: package/
