@@ -23,22 +23,14 @@ main .card:nth-of-type(3),.home-tile:nth-child(3){animation-delay:.1s}
 @media (hover:hover){.home-tile:hover img{transform:scale(1.025)}.btn:hover{transform:translateY(-1px)}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 
+
+
+
+
+
+
+/* v6.3.26 restored original known-good V6.3.7 wave */
 @keyframes mytvWave{0%,100%{transform:rotate(0deg)}15%{transform:rotate(18deg)}30%{transform:rotate(-10deg)}45%{transform:rotate(16deg)}60%{transform:rotate(-6deg)}75%{transform:rotate(10deg)}}
 .home-head h1{position:relative}
-.home-head h1::after{content:"👋";display:inline-block;margin-left:7px;transform-origin:70% 75%;animation:mytvWave 1.5s ease-in-out .35s 2}
-@media(prefers-reduced-motion:reduce){.home-head h1::after{animation:none}}
-/* v6.3.17: persistent Home greeting hand */
-.home-head h1::before,.home-head h1::after{content:none!important}
-
-/* v6.3.21 animated greeting wave */
-@keyframes greetingWave{0%,100%{transform:rotate(0deg)}20%{transform:rotate(18deg)}40%{transform:rotate(-10deg)}60%{transform:rotate(16deg)}80%{transform:rotate(-6deg)}}
-.home-head h1 .greeting-wave{display:inline-block;transform-origin:70% 70%;animation:greetingWave 1.35s ease-in-out .25s 3}
-
-
-/* v6.3.23 persistent greeting motion */
-@keyframes greetingWaveLoop{0%{transform:rotate(0deg)}12%{transform:rotate(22deg)}25%{transform:rotate(-14deg)}38%{transform:rotate(20deg)}51%{transform:rotate(-10deg)}64%{transform:rotate(14deg)}78%,100%{transform:rotate(0deg)}}
-.home-head h1 .greeting-wave{display:inline-block!important;transform-origin:70% 75%!important;will-change:transform;animation-name:greetingWaveLoop!important;animation-duration:1.2s!important;animation-timing-function:ease-in-out!important;animation-delay:0s!important;animation-iteration-count:infinite!important;animation-fill-mode:both!important;animation-play-state:running!important}
-@media (prefers-reduced-motion:reduce){.home-head h1 .greeting-wave{animation-name:greetingWaveLoop!important;animation-duration:1.2s!important;animation-iteration-count:infinite!important;animation-play-state:running!important}}
-
-/* v6.3.24 JS controls greeting hand motion */
-.home-head h1 .greeting-wave{animation:none!important;transition:transform 90ms linear!important}
+.home-head h1::before{content:none!important}
+.home-head h1::after{content:"👋"!important;display:inline-block!important;margin-left:7px!important;transform-origin:70% 75%!important;animation:mytvWave 1.5s ease-in-out .35s infinite!important}
