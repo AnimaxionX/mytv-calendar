@@ -31,3 +31,9 @@
  .word strong{margin:0 3px 0 3px!important}
  .word mark{margin:0!important;padding:0!important}
 }
+
+/* canonical wordmark spacing: My TV Calendar */
+.word{display:block!important;white-space:nowrap!important;word-spacing:0!important;letter-spacing:0!important}
+.word strong{display:inline!important;margin:0!important;padding:0!important}
+.word mark{display:inline!important;margin:0!important;padding:0!important}
+@media(max-width:720px){.word{display:block!important;white-space:nowrap!important;letter-spacing:-.15px!important}.word strong,.word mark{display:inline!important;margin:0!important;padding:0!important}}
