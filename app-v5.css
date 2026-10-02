@@ -61,3 +61,11 @@
  .logo>em:before,.logo>em:after{bottom:-7px!important;width:3px!important;height:7px!important}
  .logo>em:before{left:9px!important}.logo>em:after{right:9px!important}
 }
+
+/* remove stray blue square before wordmark */
+.brandwrap>div:last-child{position:relative!important}
+.brandwrap>div:last-child::before,.brandwrap>div:last-child:before,.word::before,.word:before,.word>span::before,.word>span:before{content:none!important;display:none!important;width:0!important;height:0!important;border:0!important;background:none!important}
+/* final mobile logo optical centering */
+@media(max-width:720px){
+ .logo>span{top:11px!important;bottom:0!important;padding:0 0 5px 2px!important;display:flex!important;align-items:center!important;justify-content:center!important}
+}
