@@ -1,1 +1,1 @@
-MyTV Calendar mobile rebuild from Python v4.4 - 2026-10-02
+My TV Calendar V6.3.15 — global brand-spacing fix — 2026-10-02
