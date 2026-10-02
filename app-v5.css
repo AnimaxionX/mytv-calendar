@@ -200,3 +200,15 @@
    line-height:1!important;
  }
 }
+
+/* v5.9 raise play icon higher inside mobile calendar */
+@media(max-width:720px){
+ .logo>span{
+   top:5px!important;
+   bottom:5px!important;
+   padding:0 0 4px 1px!important;
+   display:flex!important;
+   align-items:center!important;
+   justify-content:center!important;
+ }
+}
