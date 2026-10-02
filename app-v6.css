@@ -39,3 +39,6 @@ main .card:nth-of-type(3),.home-tile:nth-child(3){animation-delay:.1s}
 @keyframes greetingWaveLoop{0%{transform:rotate(0deg)}12%{transform:rotate(22deg)}25%{transform:rotate(-14deg)}38%{transform:rotate(20deg)}51%{transform:rotate(-10deg)}64%{transform:rotate(14deg)}78%,100%{transform:rotate(0deg)}}
 .home-head h1 .greeting-wave{display:inline-block!important;transform-origin:70% 75%!important;will-change:transform;animation-name:greetingWaveLoop!important;animation-duration:1.2s!important;animation-timing-function:ease-in-out!important;animation-delay:0s!important;animation-iteration-count:infinite!important;animation-fill-mode:both!important;animation-play-state:running!important}
 @media (prefers-reduced-motion:reduce){.home-head h1 .greeting-wave{animation-name:greetingWaveLoop!important;animation-duration:1.2s!important;animation-iteration-count:infinite!important;animation-play-state:running!important}}
+
+/* v6.3.24 JS controls greeting hand motion */
+.home-head h1 .greeting-wave{animation:none!important;transition:transform 90ms linear!important}
