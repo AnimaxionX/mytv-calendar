@@ -1,6 +1,6 @@
 {
-  "name": "MyTV Calendar",
-  "short_name": "MyTV Calendar",
+  "name": "My TV Calendar",
+  "short_name": "My TV Calendar",
   "start_url": "./?source=pwa",
   "scope": "./",
   "display": "standalone",
