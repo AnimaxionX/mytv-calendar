@@ -3,3 +3,22 @@
 @media(max-width:720px){.home-head{display:block}.home-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.home-tile-info{padding:7px 5px}.home-tile-info b{font-size:11px}.home-tile-info span{font-size:9px}.calendar-card{padding:12px 10px;gap:8px}.calendar-when{font-size:12px}.calendar-when span{font-size:10px}}
 .cal-head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:18px}.cal-controls{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);padding:7px 10px}.cal-controls button{border:0;background:var(--blue);color:#fff;width:36px;height:36px;font-size:24px;font-weight:900}.cal-controls b{min-width:150px;text-align:center}.cal-week,.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}.cal-week{background:var(--blue);color:#fff}.cal-week b{text-align:center;padding:10px 4px;font-size:12px}.cal-grid{border-left:1px solid var(--line);border-top:1px solid var(--line);background:#fff}.cal-day{min-height:132px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:7px;min-width:0}.muted-day{background:#f4f8fb}.cal-num{font-weight:900;font-size:13px;display:flex;justify-content:space-between}.cal-num span{font-size:9px;background:var(--orange);color:#fff;padding:3px 5px}.cal-today{background:#fff9e7;box-shadow:inset 0 0 0 2px var(--yellow)}.cal-events{margin-top:7px;display:grid;gap:5px}.cal-events button{border:0;border-left:3px solid var(--purple);background:#f1efff;text-align:left;padding:6px;min-width:0}.cal-events b,.cal-events span{display:block;overflow:hidden;text-overflow:ellipsis}.cal-events b{font-size:11px;white-space:nowrap}.cal-events span{font-size:9px;color:var(--muted);margin-top:2px}.cal-pending-title{margin-top:24px}
 @media(max-width:720px){.cal-head{display:block}.cal-controls{margin-top:12px;justify-content:space-between}.cal-controls b{min-width:0}.cal-week{position:sticky;top:72px;z-index:20}.cal-week b{font-size:9px;padding:8px 1px}.cal-day{min-height:86px;padding:3px}.cal-num{font-size:10px}.cal-num span{display:none}.cal-events{gap:3px;margin-top:4px}.cal-events button{padding:3px 2px;border-left-width:2px}.cal-events b{font-size:7px}.cal-events span{font-size:7px}.cal-grid{overflow:hidden}}
+
+/* V6.3.6 motion layer */
+@keyframes mytvRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes mytvPop{0%{opacity:0;transform:scale(.94)}70%{transform:scale(1.025)}100%{opacity:1;transform:scale(1)}}
+@keyframes mytvTag{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+@keyframes mytvPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+header .brand{animation:mytvPop .55s cubic-bezier(.2,.8,.2,1) both}
+header .tag{animation:mytvTag .55s ease-out .18s both}
+main .card,.home-tile,.calendar-card,.myshows-section{animation:mytvRise .38s ease-out both}
+main .card:nth-of-type(2),.home-tile:nth-child(2){animation-delay:.05s}
+main .card:nth-of-type(3),.home-tile:nth-child(3){animation-delay:.1s}
+.btn,.bottom-nav button,.side button,.cal-controls button,.cal-events button{transition:transform .16s ease,box-shadow .2s ease,background-color .2s ease,opacity .2s ease}
+.btn:active,.bottom-nav button:active,.side button:active,.cal-controls button:active,.cal-events button:active{transform:scale(.96)}
+.bottom-nav button.active,.side button.active{animation:mytvPop .3s ease-out}
+.home-tile img,.poster{transition:transform .3s ease}
+.home-tile:active img{transform:scale(1.025)}
+.cal-grid{animation:mytvRise .32s ease-out both}
+@media (hover:hover){.home-tile:hover img{transform:scale(1.025)}.btn:hover{transform:translateY(-1px)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
