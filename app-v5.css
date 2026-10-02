@@ -50,3 +50,14 @@
  .word{gap:1px!important}
  .word>span,.word>strong,.word>mark{letter-spacing:-.35px!important}
 }
+
+/* Mobile logo geometry rebuilt from the phone screenshot: cleaner calendar + optically centered play */
+@media(max-width:720px){
+ .logo{width:44px!important;height:48px!important;border:3px solid var(--b)!important;border-radius:1px!important;background:#fff!important}
+ .logo>b{left:0!important;right:0!important;top:7px!important;height:4px!important;background:var(--y)!important}
+ .logo>i{top:-7px!important;width:4px!important;height:10px!important;border-radius:1px!important}
+ .logo .o{left:8px!important}.logo .p{right:8px!important}
+ .logo>span{position:absolute!important;left:0!important;right:0!important;top:11px!important;bottom:0!important;padding:0 0 2px 2px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:16px!important;line-height:1!important}
+ .logo>em:before,.logo>em:after{bottom:-7px!important;width:3px!important;height:7px!important}
+ .logo>em:before{left:9px!important}.logo>em:after{right:9px!important}
+}
