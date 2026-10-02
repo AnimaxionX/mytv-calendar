@@ -4,6 +4,34 @@
 /* v4.4 desktop-parity mobile skin */
 :root{--desk-bg:#f7fbff;--desk-sky:#eaf6ff;--desk-blue:#168cff;--desk-orange:#ff7a45;--desk-yellow:#ffd84d;--desk-purple:#7b61ff;--desk-green:#22c58b;--desk-ink:#17223b;--desk-muted:#66738d;--desk-line:#cfe5fa}
 body{background:var(--desk-bg)}.app{background:var(--desk-bg);max-width:760px}.top{background:white;padding:12px 16px;border-bottom:1px solid var(--desk-line)}.brand{font-size:22px;color:var(--desk-ink)}.brand span{color:var(--desk-blue)}.live{background:#f1eeff;color:var(--desk-purple)}.page{padding:18px 14px 26px}.hero{background:white;color:var(--desk-ink);border:1px solid var(--desk-line);box-shadow:0 5px 18px #168cff0c}.hero h1{font-size:25px}.hero p{color:var(--desk-muted)}.card,.stat{border-color:var(--desk-line);box-shadow:none}.tag{background:var(--desk-sky);color:var(--desk-blue)}.btn{background:var(--desk-blue)}.btn.alt{background:var(--desk-sky);color:var(--desk-blue)}.bottom{border-top:1px solid var(--desk-line)}.nav.on{background:var(--desk-blue);color:white;border-radius:10px}.nav{margin:0 2px}.desktop-tools{display:grid;grid-template-columns:1fr;gap:8px}.toolcard{display:flex;align-items:center;gap:12px}.toolicon{width:42px;height:42px;border-radius:12px;background:var(--desk-sky);display:grid;place-items:center;font-size:20px;flex:none}.brandline{height:5px;display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin:-1px -14px 16px}.brandline i:nth-child(1){background:var(--desk-blue)}.brandline i:nth-child(2){background:var(--desk-orange)}.brandline i:nth-child(3){background:var(--desk-yellow)}.brandline i:nth-child(4){background:var(--desk-purple)}.brandline i:nth-child(5){background:var(--desk-green)}
+</style><style>
+/* exact desktop visual language, responsive for phone */
+@media(max-width:700px){
+ body{background:#f4f9fe!important}
+ .app{max-width:none!important;min-height:100vh!important;background:#f4f9fe!important}
+ .top{height:auto!important;padding:14px 16px!important;background:#fff!important;border-top:2px solid #cfe7fb!important}
+ .brand{font-size:24px!important;font-weight:900!important;letter-spacing:-.5px!important}
+ .brand:before{content:"▣ ";color:#168cff}
+ .tagline{font-weight:700!important;color:#ff6f3d!important}
+ .live{display:none!important}
+ .page{padding:16px 16px 100px!important}
+ .hero{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;margin:0 0 20px!important}
+ .hero h1{font-size:29px!important;color:#101c34!important;margin:0 0 8px!important}
+ .hero p{font-size:15px!important;color:#687994!important}
+ .stats{display:grid!important;grid-template-columns:1fr!important;gap:10px!important}
+ .stat{background:#fff!important;border:1px solid #bcdfff!important;border-radius:0!important;padding:18px 20px!important}
+ .stat b{font-size:27px!important;color:#2c98f5!important}
+ .card{background:#fff!important;border:1px solid #bcdfff!important;border-radius:0!important;padding:16px!important}
+ .title{color:#101c34!important;font-weight:800!important}
+ .sub,.small{color:#687994!important}
+ .btn{border-radius:0!important;background:#7356ff!important}
+ .btn.alt{background:#7356ff!important;color:#fff!important}
+ .bottom{position:fixed!important;bottom:0!important;left:0!important;right:0!important;height:72px!important;padding:7px 4px 8px!important;background:#e8f5ff!important;border-top:1px solid #bcdfff!important;z-index:30!important}
+ .nav{font-size:10px!important;font-weight:800!important;padding:9px 2px!important;border-radius:0!important;color:#13213a!important}
+ .nav.on{background:#2d97ef!important;color:#fff!important}
+ h2{color:#101c34!important}
+ .brandline{margin:-16px -16px 18px!important}
+}
 </style></head><body><div class="app"><header class="top"><div class="brand"><span>MyTV</span> Calendar</div><div class="live">● MOBILE BETA</div></header><main id="content"></main></div>
 <nav class="bottom"><button class="nav on" data-p="home"><i>⌂</i>Home</button><button class="nav" data-p="discover"><i>⌕</i>Discover</button><button class="nav" data-p="shows"><i>♥</i>My Shows</button><button class="nav" data-p="calendar"><i>▣</i>Calendar</button><button class="nav" data-p="more"><i>•••</i>More</button></nav>
 <script>
@@ -66,4 +94,16 @@ function mobileAccount(){shell(brandLine()+'<button class="btn alt" onclick="mor
 function mobileSettings(){shell(brandLine()+'<button class="btn alt" onclick="more()">← Back</button><h2>Settings</h2><div class="sub">Personalize your MyTV Calendar experience.</div><div class="card"><div class="title">Profile name</div><input id="pname" class="search" style="margin-top:10px" value="'+(localStorage.getItem('mytv-profile')||'My Profile')+'"><div class="title" style="margin-top:16px">Reminder before show</div><select id="rmins" class="search" style="margin-top:8px"><option>5</option><option>10</option><option selected>15</option><option>30</option><option>60</option><option>120</option><option>1440</option></select><button class="btn" style="background:var(--desk-green);margin-top:12px" onclick="saveMobileSettings()">Save Settings</button></div><div class="card"><div class="title">Real Where to Watch</div><div class="sub">TMDB / JustWatch provider lookup is protected in the Windows build. The private credential is not exposed in this public HTML.</div></div><div class="card"><div class="title">Data Health</div><div id="health">Checking live data…</div><button class="btn alt" style="margin-top:10px" onclick="checkDesktopHealth()">Refresh Data Health</button></div>');checkDesktopHealth()}
 function saveMobileSettings(){localStorage.setItem('mytv-profile',document.getElementById('pname').value.trim()||'My Profile');localStorage.setItem('mytv-reminder-minutes',document.getElementById('rmins').value);alert('Settings saved.')}
 async function checkDesktopHealth(){let el=document.getElementById('health');if(!el)return;let ok=false;try{ok=(await fetch('https://api.tvmaze.com/shows/1')).ok}catch(e){}el.innerHTML='<div class="sub">TV schedule IDs: '+realSaved.filter(x=>x.id).length+'/'+realSaved.length+' followed • Google alerts: Windows connection protected • TMDB: Windows connection protected • TVmaze: '+(ok?'Connected':'Unavailable')+'</div><div class="small" style="margin-top:8px">Leaving Soon stays disabled without verified removal/expiry dates.</div>'}
+</script><script>
+/* Desktop-parity labels and home presentation */
+function desktopHome(){
+ for(const x of realSaved){refreshReal(x)}
+ let ready=0; realSaved.forEach(x=>{if(x.airdate&&x.airdate<=new Date().toISOString().slice(0,10))ready++});
+ shell('<div class="hero"><h1>Good morning 👋</h1><p>Here’s what’s coming up across your streaming services.</p></div>'+
+ '<div class="small" style="color:#10bd82;font-weight:800;margin-bottom:12px">Live schedule refreshed: '+new Date().toLocaleString(undefined,{weekday:"long",month:"long",day:"numeric",hour:"numeric",minute:"2-digit"})+'</div>'+
+ '<div class="stats"><div class="stat"><b>'+realSaved.length+'</b><span>Shows followed</span></div><div class="stat"><b style="color:#ff7347">'+mobileServices.length+'</b><span>Services</span></div><div class="stat"><b style="color:#ff4e79">'+ready+'</b><span>Ready to watch</span></div></div>'+
+ '<h2>Tonight & Coming Up</h2>'+(realSaved.length?realSaved.map(x=>'<div class="card"><div class="row"><div class="meta"><div class="title">'+x.name+'</div><div class="sub">'+labelDate(x.airdate)+(x.airtime?' • '+x.airtime:'')+' • '+(x.nextName||'Upcoming')+(x.network?' • '+x.network:'')+'</div></div><button class="btn alt" onclick="realDetails('+x.id+')">Details</button></div></div>').join(''):'<div class="card"><div class="sub">Use Discover to follow your first show.</div></div>'))
+}
+home=desktopHome;
+desktopHome();
 </script></body></html>
