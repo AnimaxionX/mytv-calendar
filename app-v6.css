@@ -32,3 +32,5 @@ main .card:nth-of-type(3),.home-tile:nth-child(3){animation-delay:.1s}
 
 /* v6.3.27 original app motion restored + continuous greeting wave */
 .home-head h1{position:relative}
+
+#homeWaveHand{display:inline-block!important;visibility:visible!important;opacity:1!important;font-size:1em!important}
