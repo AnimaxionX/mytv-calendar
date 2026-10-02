@@ -2,3 +2,16 @@
 @media(max-width:720px){header{height:72px;padding:10px;gap:8px;position:sticky;top:0;z-index:50}.brandwrap{gap:8px;min-width:0}.logo{width:43px;height:43px;border-width:3px}.logo>b{top:3px;height:5px}.logo>i{top:-9px;width:5px;height:9px}.logo .o{left:6px}.logo .p{right:6px}.logo>span{inset:10px 0 0;font-size:17px}.logo>em:before,.logo>em:after{bottom:-8px;width:3px;height:7px}.logo>em:before{left:8px}.logo>em:after{right:8px}.word{font-size:17px;white-space:nowrap}.brandwrap small{font-size:7.5px;margin-top:4px;white-space:nowrap}.profile{padding:7px 6px;font-size:8px;white-space:nowrap}.layout{min-height:calc(100dvh - 72px)}aside{display:none}main{padding:16px 14px 92px}.hero h1{font-size:26px}.fresh{margin-top:16px}.stats{gap:7px;margin-bottom:22px}.stat{padding:12px 8px}.stat b{font-size:22px}.card{padding:13px}.row{gap:9px}.title{font-size:15px}.btn{padding:9px 10px;font-size:11px}.poster{width:52px;height:72px}#bottom{position:fixed;z-index:99;left:0;right:0;bottom:0;height:72px;display:grid;grid-template-columns:repeat(5,1fr);background:var(--side);border-top:1px solid var(--line);padding:4px}#bottom button{border:0;background:transparent;color:var(--ink);font-size:9px;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0}#bottom button b{font-size:18px}#bottom button.on{background:var(--b);color:#fff}}
 /* remove stray square/icon before the wordmark */
 .word::before,.word:before,.brandwrap>div:last-child::before,.brandwrap>div:last-child:before{content:none!important;display:none!important;border:0!important;width:0!important;height:0!important;margin:0!important;padding:0!important}
+
+/* exact logo/wordmark spacing correction from approved reference */
+.brandwrap{gap:36px!important}
+.word{word-spacing:0!important;letter-spacing:0!important;white-space:nowrap!important}
+.word strong{display:inline-block!important;margin-left:0!important;margin-right:16px!important}
+.word mark{display:inline-block!important;margin-left:0!important}
+.brandwrap small{margin-top:18px!important}
+@media(max-width:720px){
+ .brandwrap{gap:12px!important}
+ .word{font-size:16px!important;letter-spacing:-.2px!important}
+ .word strong{margin-right:6px!important}
+ .brandwrap small{margin-top:5px!important}
+}
