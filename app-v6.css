@@ -29,3 +29,7 @@ main .card:nth-of-type(3),.home-tile:nth-child(3){animation-delay:.1s}
 @media(prefers-reduced-motion:reduce){.home-head h1::after{animation:none}}
 /* v6.3.17: persistent Home greeting hand */
 .home-head h1::before,.home-head h1::after{content:none!important}
+
+/* v6.3.21 animated greeting wave */
+@keyframes greetingWave{0%,100%{transform:rotate(0deg)}20%{transform:rotate(18deg)}40%{transform:rotate(-10deg)}60%{transform:rotate(16deg)}80%{transform:rotate(-6deg)}}
+.home-head h1 .greeting-wave{display:inline-block;transform-origin:70% 70%;animation:greetingWave 1.35s ease-in-out .25s 3}
