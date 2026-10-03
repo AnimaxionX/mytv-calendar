@@ -120,7 +120,7 @@ function nightWatched(id){watched[String(id)]=true;save(K.watched,watched);build
 async function settings(){
  const plan=await getCurrentPlan();
  const paid=plan!=='free';
- V.innerHTML='<h2>Settings</h2><div class="card"><div class="title">Push Notifications</div><div class="sub">'+(paid?'Get My TV Calendar reminders and show updates on this device, powered by OneSignal.':'Push notifications are available with Calendar+ and higher.')+'</div>'+(paid?'<button type="button" id="push-toggle" class="btn" data-push="on" style="margin-top:12px">Enable Push Notifications</button><div id="push-msg" class="sub" style="margin-top:10px"></div>':'')+'</div><div class="card">My TV Calendar V6.3.96</div>';
+ V.innerHTML='<h2>Settings</h2><div class="card"><div class="title">Push Notifications</div><div class="sub">'+(paid?'Get My TV Calendar reminders and show updates on this device, powered by OneSignal.':'Push notifications are available with Calendar+ and higher.')+'</div>'+(paid?'<button type="button" id="push-toggle" class="btn" data-push="on" style="margin-top:12px">Enable Push Notifications</button><div id="push-msg" class="sub" style="margin-top:10px"></div>':'')+'</div><div class="card">My TV Calendar V6.3.97</div>';
  if(paid)renderPushButton();
 }
 const BILLING_PORTAL='https://billing.stripe.com/p/login/8x24gycwP7vC7kT1Aeco000';
@@ -140,7 +140,7 @@ async function getCurrentPlan(force=false){
   PLAN_CACHE={plan,at:Date.now()};return plan;
  }catch{PLAN_CACHE={plan:'free',at:Date.now()};return'free'}
 }
-async function hasPlan(required){const p=await getCurrentPlan();return (PLAN_LEVELS[p]||0)>=(PLAN_LEVELS[required]||0)}
+async function hasPlan(required){const user=await getSessionUser();if(!user){PLAN_CACHE={plan:'free',at:Date.now()};return false}const p=await getCurrentPlan(true);return (PLAN_LEVELS[p]||0)>=(PLAN_LEVELS[required]||0)}
 function lockedFeature(name,need){V.innerHTML='<h2>'+esc(name)+'</h2><div class="card"><div class="title">Premium Feature</div><div class="sub">'+esc(name)+' is available with '+esc(need)+'.</div><button class="btn" style="width:100%;margin-top:14px" onclick="go(\'subscriptions\')">View Subscriptions</button></div>'}
 async function subscriptions(){
  const user=await getSessionUser();
@@ -215,7 +215,7 @@ async function completePasswordRecovery(){
  catch(err){if(m)m.textContent='Could not update password. '+(err?.message||'Please request a new reset link and try again.')}
  finally{if(b)b.disabled=false}
 }
-async function signOutAccount(){if(SB)await SB.auth.signOut();PLAN_CACHE={plan:'free',at:0};subscriptions()}
+async function signOutAccount(){if(SB)await SB.auth.signOut();PLAN_CACHE={plan:'free',at:Date.now()};go('home')}
 async function startCheckout(plan){
  const user=await getSessionUser();if(!user){alert('Sign in first so your purchase can activate automatically.');return}
  const base=PAYMENT_LINKS[plan];if(!base)return;
