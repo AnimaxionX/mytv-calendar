@@ -120,7 +120,7 @@ function nightWatched(id){watched[String(id)]=true;save(K.watched,watched);build
 async function settings(){
  const plan=await getCurrentPlan();
  const paid=plan!=='free';
- V.innerHTML='<h2>Settings</h2><div class="card"><div class="title">Push Notifications</div><div class="sub">'+(paid?'Get My TV Calendar reminders and show updates on this device, powered by OneSignal.':'Push notifications are available with Calendar+ and higher.')+'</div>'+(paid?'<button type="button" id="push-toggle" class="btn" data-push="on" style="margin-top:12px">Enable Push Notifications</button><div id="push-msg" class="sub" style="margin-top:10px"></div>':'')+'</div><div class="card">My TV Calendar V6.3.87</div>';
+ V.innerHTML='<h2>Settings</h2><div class="card"><div class="title">Push Notifications</div><div class="sub">'+(paid?'Get My TV Calendar reminders and show updates on this device, powered by OneSignal.':'Push notifications are available with Calendar+ and higher.')+'</div>'+(paid?'<button type="button" id="push-toggle" class="btn" data-push="on" style="margin-top:12px">Enable Push Notifications</button><div id="push-msg" class="sub" style="margin-top:10px"></div>':'')+'</div><div class="card">My TV Calendar V6.3.88</div>';
  if(paid)renderPushButton();
 }
 const BILLING_PORTAL='https://billing.stripe.com/p/login/8x24gycwP7vC7kT1Aeco000';
@@ -203,6 +203,18 @@ async function createAccount(){
  }catch(err){if(m)m.textContent='Could not create account. '+(err?.message||'Please try again.')}
  finally{if(b){b.disabled=false;b.textContent='Create Account'}}
 }
+function passwordRecoveryScreen(){
+ V.innerHTML='<h2>Reset Password</h2><div class="card"><div class="title">Create a new password</div><div class="sub">Enter your new password below.</div><input id="recoveryPass" class="search" type="password" placeholder="New Password" autocomplete="new-password" style="margin-top:12px"><input id="recoveryPass2" class="search" type="password" placeholder="Confirm New Password" autocomplete="new-password" style="margin-top:8px"><button id="recoveryBtn" class="btn" style="width:100%;margin-top:12px" onclick="completePasswordRecovery()">Update Password</button><div id="recoveryMsg" class="sub" style="margin-top:10px"></div></div>';
+}
+async function completePasswordRecovery(){
+ const p=$('#recoveryPass')?.value||'',p2=$('#recoveryPass2')?.value||'',m=$('#recoveryMsg'),b=$('#recoveryBtn');
+ if(p.length<6){if(m)m.textContent='Password must be at least 6 characters.';return}
+ if(p!==p2){if(m)m.textContent='Passwords do not match.';return}
+ if(m)m.textContent='Updating password…';if(b)b.disabled=true;
+ try{const {error}=await SB.auth.updateUser({password:p});if(error)throw error;if(m)m.textContent='Password updated successfully. Taking you to your account…';PLAN_CACHE.at=0;setTimeout(()=>{go('subscriptions')},900)}
+ catch(err){if(m)m.textContent='Could not update password. '+(err?.message||'Please request a new reset link and try again.')}
+ finally{if(b)b.disabled=false}
+}
 async function signOutAccount(){if(SB)await SB.auth.signOut();PLAN_CACHE={plan:'free',at:0};subscriptions()}
 async function startCheckout(plan){
  const user=await getSessionUser();if(!user){alert('Sign in first so your purchase can activate automatically.');return}
@@ -210,5 +222,8 @@ async function startCheckout(plan){
  const u=new URL(base);u.searchParams.set('locked_prefilled_email',user.email||'');u.searchParams.set('client_reference_id',user.id);location.href=u.toString();
 }
 const qs=new URLSearchParams(location.search);
-if(qs.get('payment')==='success'||qs.get('route')==='subscriptions')go('subscriptions');else go('home');
+let recoveryMode=false;
+if(SB)SB.auth.onAuthStateChange((event,session)=>{if(event==='PASSWORD_RECOVERY'){recoveryMode=true;passwordRecoveryScreen()}});
+(async()=>{if(SB){try{const {data}=await SB.auth.getSession();const h=new URLSearchParams(location.hash.replace(/^#/,''));if((h.get('type')==='recovery'||qs.get('type')==='recovery')&&data?.session){recoveryMode=true;passwordRecoveryScreen();return}}catch{}}
+if(!recoveryMode){if(qs.get('payment')==='success'||qs.get('route')==='subscriptions')go('subscriptions');else go('home')}})();
 refreshFollowedSchedules();
