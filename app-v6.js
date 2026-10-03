@@ -25,10 +25,15 @@ function startHomeWave(){
  if(hand.getAnimations)hand.getAnimations().forEach(a=>a.cancel());
  if(hand.animate){
   hand.animate([
-   {transform:'rotate(0deg)',offset:0},{transform:'rotate(18deg)',offset:.08},{transform:'rotate(-10deg)',offset:.16},
-   {transform:'rotate(15deg)',offset:.24},{transform:'rotate(-6deg)',offset:.32},{transform:'rotate(8deg)',offset:.40},
-   {transform:'rotate(0deg)',offset:.48},{transform:'rotate(0deg)',offset:1}
-  ],{duration:6500,iterations:Infinity,easing:'ease-in-out'});
+   {transform:'rotate(0deg)',offset:0},
+   {transform:'rotate(14deg)',offset:.10},
+   {transform:'rotate(-8deg)',offset:.20},
+   {transform:'rotate(12deg)',offset:.30},
+   {transform:'rotate(-5deg)',offset:.40},
+   {transform:'rotate(7deg)',offset:.50},
+   {transform:'rotate(0deg)',offset:.58},
+   {transform:'rotate(0deg)',offset:1}
+  ],{duration:8000,iterations:Infinity,easing:'ease-in-out'});
  }
 }
 function home(){const tonight=shows.filter(x=>dayDiff(x.airdate)===0).sort((a,b)=>showStart(a)-showStart(b)),coming=shows.filter(x=>{let n=dayDiff(x.airdate);return n>0}).sort((a,b)=>showStart(a)-showStart(b));const featured=(tonight.length?tonight:coming).slice(0,4),rest=coming.filter(x=>!featured.includes(x));V.innerHTML='<div class="home-head"><div><h1>Good '+(new Date().getHours()<12?'Morning':new Date().getHours()<17?'Afternoon':'Evening')+' <span id="homeWaveHand" style="display:inline-block;transform-origin:70% 75%">👋</span></h1><div class="sub">What’s on for you now and what’s coming next.</div></div><div class="fresh">● Live data ready</div></div><div class="stats"><div class="stat"><b>'+shows.length+'</b>Shows followed</div><div class="stat"><b>'+services.length+'</b>Services</div><div class="stat"><b>'+tonight.length+'</b>Tonight</div></div><h2>'+(tonight.length?'Tonight':'Coming Up')+'</h2><div class="home-grid">'+(featured.length?featured.map(homeCard).join(''):'<div class="empty">Nothing scheduled yet.</div>')+'</div>'+(rest.length?'<h2 class="home-section">More From Your Shows</h2><div class="home-grid home-grid-more">'+rest.map(homeCard).join('')+'</div>':'');requestAnimationFrame(startHomeWave)}
