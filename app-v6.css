@@ -67,3 +67,14 @@ header .logo{animation:mytvFloat 4.8s ease-in-out infinite}
 .home-grid>*{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s ease!important}
 .home-grid>*:active{transform:scale(.975)!important}
 .mobile-nav button.active,.side button.active{animation:mytvPulse 2.8s ease-in-out infinite!important}
+
+/* v6.3.36 restore floating navigation tabs */
+@keyframes tabFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.mobile-nav button,.bottom-nav button,.side button{animation:tabFloat 4.6s ease-in-out infinite!important;will-change:transform}
+.mobile-nav button:nth-child(2),.bottom-nav button:nth-child(2),.side button:nth-child(2){animation-delay:.35s!important}
+.mobile-nav button:nth-child(3),.bottom-nav button:nth-child(3),.side button:nth-child(3){animation-delay:.7s!important}
+.mobile-nav button:nth-child(4),.bottom-nav button:nth-child(4),.side button:nth-child(4){animation-delay:1.05s!important}
+.mobile-nav button:nth-child(5),.bottom-nav button:nth-child(5),.side button:nth-child(5){animation-delay:1.4s!important}
+.mobile-nav button:nth-child(6),.side button:nth-child(6){animation-delay:1.75s!important}
+.mobile-nav button:nth-child(7),.side button:nth-child(7){animation-delay:2.1s!important}
+.mobile-nav button:nth-child(8),.side button:nth-child(8){animation-delay:2.45s!important}
