@@ -120,7 +120,7 @@ function nightWatched(id){watched[String(id)]=true;save(K.watched,watched);build
 async function settings(){
  const plan=await getCurrentPlan();
  const paid=plan!=='free';
- V.innerHTML='<h2>Settings</h2><div class="card"><div class="title">Push Notifications</div><div class="sub">'+(paid?'Get My TV Calendar reminders and show updates on this device, powered by OneSignal.':'Push notifications are available with Calendar+ and higher.')+'</div>'+(paid?'<button type="button" id="push-toggle" class="btn" data-push="on" style="margin-top:12px">Enable Push Notifications</button><div id="push-msg" class="sub" style="margin-top:10px"></div>':'')+'</div><div class="card">My TV Calendar V6.3.76</div>';
+ V.innerHTML='<h2>Settings</h2><div class="card"><div class="title">Push Notifications</div><div class="sub">'+(paid?'Get My TV Calendar reminders and show updates on this device, powered by OneSignal.':'Push notifications are available with Calendar+ and higher.')+'</div>'+(paid?'<button type="button" id="push-toggle" class="btn" data-push="on" style="margin-top:12px">Enable Push Notifications</button><div id="push-msg" class="sub" style="margin-top:10px"></div>':'')+'</div><div class="card">My TV Calendar V6.3.77</div>';
  if(paid)renderPushButton();
 }
 const BILLING_PORTAL='https://billing.stripe.com/p/login/8x24gycwP7vC7kT1Aeco000';
@@ -173,7 +173,6 @@ async function resendConfirmation(email){
  catch(err){if(m)m.textContent='Could not resend confirmation email. '+(err?.message||'Please try again.')}
 }
 function closeAccountCreatedModal(){document.getElementById('accountCreatedModal')?.remove();subscriptions()}
-function togglePassword(){const p=$('#subPass'),b=$('#subPassToggle');if(!p||!b)return;const hidden=p.type==='password';p.type=hidden?'text':'password';b.textContent=hidden?'🙈':'👁';b.setAttribute('aria-label',hidden?'Hide password':'Show password');b.title=hidden?'Hide password':'Show password'}
 async function signInAccount(){
  const e=$('#subEmail')?.value.trim(),p=$('#subPass')?.value||'',m=$('#subAuthMsg'),b=document.querySelector('button[onclick="signInAccount()"]');
  if(!e||!p){if(m)m.textContent='Enter your email and password.';return}
