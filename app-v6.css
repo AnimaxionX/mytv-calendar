@@ -7,7 +7,7 @@
 /* V6.3.6 motion layer */
 @keyframes mytvRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes mytvPop{0%{opacity:0;transform:scale(.94)}70%{transform:scale(1.025)}100%{opacity:1;transform:scale(1)}}
-@keyframes mytvTag{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}
+@keyframes mytvTag{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
 @keyframes mytvPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 header .brand{animation:mytvPop .55s cubic-bezier(.2,.8,.2,1) both}
 header .tag{animation:mytvTag .55s ease-out .18s both}
