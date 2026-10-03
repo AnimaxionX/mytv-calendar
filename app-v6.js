@@ -27,7 +27,7 @@ function startHomeWave(){
    {transform:'rotate(0deg)'},{transform:'rotate(22deg)'},{transform:'rotate(-14deg)'},
    {transform:'rotate(20deg)'},{transform:'rotate(-10deg)'},{transform:'rotate(14deg)'},
    {transform:'rotate(-6deg)'},{transform:'rotate(0deg)'}
-  ],{duration:2400,iterations:Infinity,easing:'ease-in-out'});
+  ],{duration:4000,iterations:Infinity,easing:'ease-in-out'});
  }
 }
 function home(){const tonight=shows.filter(x=>dayDiff(x.airdate)===0).sort((a,b)=>showStart(a)-showStart(b)),coming=shows.filter(x=>{let n=dayDiff(x.airdate);return n>0}).sort((a,b)=>showStart(a)-showStart(b));const featured=(tonight.length?tonight:coming).slice(0,4),rest=coming.filter(x=>!featured.includes(x));V.innerHTML='<div class="home-head"><div><h1>Good '+(new Date().getHours()<12?'Morning':new Date().getHours()<17?'Afternoon':'Evening')+' <span id="homeWaveHand" style="display:inline-block;transform-origin:70% 75%">👋</span></h1><div class="sub">What’s on for you now and what’s coming next.</div></div><div class="fresh">● Live data ready</div></div><div class="stats"><div class="stat"><b>'+shows.length+'</b>Shows followed</div><div class="stat"><b>'+services.length+'</b>Services</div><div class="stat"><b>'+tonight.length+'</b>Tonight</div></div><h2>'+(tonight.length?'Tonight':'Coming Up')+'</h2><div class="home-grid">'+(featured.length?featured.map(homeCard).join(''):'<div class="empty">Nothing scheduled yet.</div>')+'</div>'+(rest.length?'<h2 class="home-section">More From Your Shows</h2><div class="home-grid home-grid-more">'+rest.map(homeCard).join('')+'</div>':'');requestAnimationFrame(startHomeWave)}
