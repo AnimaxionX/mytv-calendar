@@ -120,7 +120,7 @@ function nightWatched(id){watched[String(id)]=true;save(K.watched,watched);build
 async function settings(){
  const plan=await getCurrentPlan();
  const paid=plan!=='free';
- V.innerHTML='<h2>Settings</h2><div class="card"><div class="title">Push Notifications</div><div class="sub">'+(paid?'Get My TV Calendar reminders and show updates on this device, powered by OneSignal.':'Push notifications are available with Calendar+ and higher.')+'</div>'+(paid?'<button type="button" id="push-toggle" class="btn" data-push="on" style="margin-top:12px">Enable Push Notifications</button><div id="push-msg" class="sub" style="margin-top:10px"></div>':'')+'</div><div class="card">My TV Calendar V6.3.71</div>';
+ V.innerHTML='<h2>Settings</h2><div class="card"><div class="title">Push Notifications</div><div class="sub">'+(paid?'Get My TV Calendar reminders and show updates on this device, powered by OneSignal.':'Push notifications are available with Calendar+ and higher.')+'</div>'+(paid?'<button type="button" id="push-toggle" class="btn" data-push="on" style="margin-top:12px">Enable Push Notifications</button><div id="push-msg" class="sub" style="margin-top:10px"></div>':'')+'</div><div class="card">My TV Calendar V6.3.72</div>';
  if(paid)renderPushButton();
 }
 const BILLING_PORTAL='https://billing.stripe.com/p/login/8x24gycwP7vC7kT1Aeco000';
@@ -159,6 +159,13 @@ async function subscriptions(){
  '<div class="sub" style="text-align:center;margin:14px">Secure checkout powered by Stripe.</div>';
  if(paidSuccess&&history.replaceState){const u=new URL(location.href);u.searchParams.delete('payment');history.replaceState({},'',u.toString())}
 }
+function showAccountCreatedModal(email,needsConfirm=true){
+ const old=document.getElementById('accountCreatedModal');if(old)old.remove();
+ const d=document.createElement('div');d.id='accountCreatedModal';d.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:22px';
+ d.innerHTML='<div class="card" style="width:min(420px,100%);text-align:center;padding:24px"><div style="font-size:42px;margin-bottom:8px">✓</div><div class="title" style="font-size:22px">Account Created</div><div class="sub" style="margin-top:10px">'+(needsConfirm?'We sent a confirmation email to <b>'+esc(email)+'</b>. Open the email and tap the confirmation link before signing in.':'Your account is ready and you are signed in.')+'</div><button class="btn" style="width:100%;margin-top:18px" onclick="closeAccountCreatedModal()">OK</button></div>';
+ document.body.appendChild(d);
+}
+function closeAccountCreatedModal(){document.getElementById('accountCreatedModal')?.remove();subscriptions()}
 function togglePassword(){const p=$('#subPass');if(!p)return;const show=p.type==='password';p.type=show?'text':'password';const b=p.parentElement?.querySelector('button');if(b){b.setAttribute('aria-label',show?'Hide password':'Show password');b.title=show?'Hide password':'Show password';b.textContent=show?'◉':'👁'}}
 async function signInAccount(){
  const e=$('#subEmail')?.value.trim(),p=$('#subPass')?.value||'',m=$('#subAuthMsg'),b=document.querySelector('button[onclick="signInAccount()"]');
@@ -181,8 +188,8 @@ async function createAccount(){
  try{
   const {data,error}=await SB.auth.signUp({email:e,password:p,options:{emailRedirectTo:'https://animaxionx.github.io/mytv-calendar/?route=subscriptions'}});
   if(error){if(m)m.textContent=error.message;return}
-  if(data?.session){PLAN_CACHE.at=0;if(m)m.textContent='Account created and signed in.';await subscriptions()}
-  else if(m)m.textContent='Account exists or needs email confirmation. Check your email, confirm the account, then use Sign In.';
+  if(data?.session){PLAN_CACHE.at=0;showAccountCreatedModal(e,false)}
+  else showAccountCreatedModal(e,true);
  }catch(err){if(m)m.textContent='Could not create account. '+(err?.message||'Please try again.')}
  finally{if(b){b.disabled=false;b.textContent='Create Account'}}
 }
