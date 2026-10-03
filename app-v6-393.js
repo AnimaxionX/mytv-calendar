@@ -120,7 +120,7 @@ function nightWatched(id){watched[String(id)]=true;save(K.watched,watched);build
 async function settings(){
  const plan=await getCurrentPlan();
  const paid=plan!=='free';
- V.innerHTML='<h2>Settings</h2><div class="card"><div class="title">Push Notifications</div><div class="sub">'+(paid?'Get My TV Calendar reminders and show updates on this device, powered by OneSignal.':'Push notifications are available with Calendar+ and higher.')+'</div>'+(paid?'<button type="button" id="push-toggle" class="btn" data-push="on" style="margin-top:12px">Enable Push Notifications</button><div id="push-msg" class="sub" style="margin-top:10px"></div>':'')+'</div><div class="card">My TV Calendar V6.3.98</div>';
+ V.innerHTML='<h2>Settings</h2><div class="card"><div class="title">Push Notifications</div><div class="sub">'+(paid?'Get My TV Calendar reminders and show updates on this device, powered by OneSignal.':'Push notifications are available with Calendar+ and higher.')+'</div>'+(paid?'<button type="button" id="push-toggle" class="btn" data-push="on" style="margin-top:12px">Enable Push Notifications</button><div id="push-msg" class="sub" style="margin-top:10px"></div>':'')+'</div><div class="card">My TV Calendar V6.3.99</div>';
  if(paid)renderPushButton();
 }
 const BILLING_PORTAL='https://billing.stripe.com/p/login/8x24gycwP7vC7kT1Aeco000';
@@ -183,7 +183,7 @@ async function signInAccount(){
   const {data,error}=await SB.auth.signInWithPassword({email:e,password:p});
   if(error){if(m)m.textContent=error.message;return}
   if(!data?.session){if(m)m.textContent='Sign in was not completed. Check your email confirmation and try again.';return}
-  PLAN_CACHE.at=0;if(m)m.textContent='Signed in successfully.';await subscriptions();
+  PLAN_CACHE.at=0;if(m)m.textContent='Signed in successfully.';await getCurrentPlan(true);await go('home');
  }catch(err){if(m)m.textContent='Could not sign in. '+(err?.message||'Please try again.')}
  finally{if(b){b.disabled=false;b.textContent='Sign In'}}
 }
