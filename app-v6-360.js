@@ -120,7 +120,7 @@ function nightWatched(id){watched[String(id)]=true;save(K.watched,watched);build
 async function settings(){
  const plan=await getCurrentPlan();
  const paid=plan!=='free';
- V.innerHTML='<h2>Settings</h2><div class="card"><div class="title">Push Notifications</div><div class="sub">'+(paid?'Get My TV Calendar reminders and show updates on this device, powered by OneSignal.':'Push notifications are available with Calendar+ and higher.')+'</div>'+(paid?'<button type="button" id="push-toggle" class="btn" data-push="on" style="margin-top:12px">Enable Push Notifications</button><div id="push-msg" class="sub" style="margin-top:10px"></div>':'')+'</div><div class="card">My TV Calendar V6.3.70</div>';
+ V.innerHTML='<h2>Settings</h2><div class="card"><div class="title">Push Notifications</div><div class="sub">'+(paid?'Get My TV Calendar reminders and show updates on this device, powered by OneSignal.':'Push notifications are available with Calendar+ and higher.')+'</div>'+(paid?'<button type="button" id="push-toggle" class="btn" data-push="on" style="margin-top:12px">Enable Push Notifications</button><div id="push-msg" class="sub" style="margin-top:10px"></div>':'')+'</div><div class="card">My TV Calendar V6.3.71</div>';
  if(paid)renderPushButton();
 }
 const BILLING_PORTAL='https://billing.stripe.com/p/login/8x24gycwP7vC7kT1Aeco000';
@@ -161,13 +161,30 @@ async function subscriptions(){
 }
 function togglePassword(){const p=$('#subPass');if(!p)return;const show=p.type==='password';p.type=show?'text':'password';const b=p.parentElement?.querySelector('button');if(b){b.setAttribute('aria-label',show?'Hide password':'Show password');b.title=show?'Hide password':'Show password';b.textContent=show?'◉':'👁'}}
 async function signInAccount(){
- const e=$('#subEmail')?.value.trim(),p=$('#subPass')?.value||'',m=$('#subAuthMsg');if(!e||!p){if(m)m.textContent='Enter your email and password.';return}
- const {error}=await SB.auth.signInWithPassword({email:e,password:p});if(error){if(m)m.textContent=error.message;return}PLAN_CACHE.at=0;subscriptions();
+ const e=$('#subEmail')?.value.trim(),p=$('#subPass')?.value||'',m=$('#subAuthMsg'),b=document.querySelector('button[onclick="signInAccount()"]');
+ if(!e||!p){if(m)m.textContent='Enter your email and password.';return}
+ if(!SB){if(m)m.textContent='Login service did not load. Refresh the app and try again.';return}
+ if(m)m.textContent='Signing in…';if(b){b.disabled=true;b.textContent='Signing In…'}
+ try{
+  const {data,error}=await SB.auth.signInWithPassword({email:e,password:p});
+  if(error){if(m)m.textContent=error.message;return}
+  if(!data?.session){if(m)m.textContent='Sign in was not completed. Check your email confirmation and try again.';return}
+  PLAN_CACHE.at=0;if(m)m.textContent='Signed in successfully.';await subscriptions();
+ }catch(err){if(m)m.textContent='Could not sign in. '+(err?.message||'Please try again.')}
+ finally{if(b){b.disabled=false;b.textContent='Sign In'}}
 }
 async function createAccount(){
- const e=$('#subEmail')?.value.trim(),p=$('#subPass')?.value||'',m=$('#subAuthMsg');if(!e||p.length<6){if(m)m.textContent='Enter a valid email and a password with at least 6 characters.';return}
- const {data,error}=await SB.auth.signUp({email:e,password:p});if(error){if(m)m.textContent=error.message;return}
- if(data?.session){PLAN_CACHE.at=0;subscriptions()}else if(m)m.textContent='Account created. Check your email to confirm, then sign in.';
+ const e=$('#subEmail')?.value.trim(),p=$('#subPass')?.value||'',m=$('#subAuthMsg'),b=document.querySelector('button[onclick="createAccount()"]');
+ if(!e||p.length<6){if(m)m.textContent='Enter a valid email and a password with at least 6 characters.';return}
+ if(!SB){if(m)m.textContent='Account service did not load. Refresh the app and try again.';return}
+ if(m)m.textContent='Creating account…';if(b){b.disabled=true;b.textContent='Creating…'}
+ try{
+  const {data,error}=await SB.auth.signUp({email:e,password:p,options:{emailRedirectTo:'https://animaxionx.github.io/mytv-calendar/?route=subscriptions'}});
+  if(error){if(m)m.textContent=error.message;return}
+  if(data?.session){PLAN_CACHE.at=0;if(m)m.textContent='Account created and signed in.';await subscriptions()}
+  else if(m)m.textContent='Account exists or needs email confirmation. Check your email, confirm the account, then use Sign In.';
+ }catch(err){if(m)m.textContent='Could not create account. '+(err?.message||'Please try again.')}
+ finally{if(b){b.disabled=false;b.textContent='Create Account'}}
 }
 async function signOutAccount(){if(SB)await SB.auth.signOut();PLAN_CACHE={plan:'free',at:0};subscriptions()}
 async function startCheckout(plan){
