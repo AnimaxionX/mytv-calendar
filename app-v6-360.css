@@ -113,3 +113,6 @@ header .logo{animation:mytvFloat 4.8s ease-in-out infinite}
 
 /* v6.3.61 theatrical movie status */
 .theater-badge{display:inline-block;margin-top:10px;padding:8px 11px;border-radius:999px;background:#f1edff;color:var(--purple);font-weight:900;font-size:13px}
+
+/* v6.3.62 simplified Discover */
+.movies-browse-btn{width:100%;margin:10px 0 16px;border:1px solid #d9e7f2;border-radius:14px;background:#fff;color:var(--purple);font-weight:900;padding:12px 14px;box-shadow:0 4px 14px rgba(31,71,105,.06)}.movies-browse-btn:active{transform:scale(.985)}
