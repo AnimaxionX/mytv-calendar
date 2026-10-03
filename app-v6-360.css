@@ -1,0 +1,112 @@
+:root{--blue:#2f98ef;--orange:#ff7043;--yellow:#ffd64a;--purple:#7057f5;--green:#20bd8a;--red:#ff5b5b;--ink:#111b31;--muted:#74839e;--bg:#f5faff;--side:#e7f5ff;--line:#b8dcfb}*{box-sizing:border-box}html,body{margin:0;min-height:100%;font:15px system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);background:var(--bg)}button,input,select{font:inherit}body{padding-bottom:0}.top{height:108px;background:#fff;border-bottom:1px solid #d8e9f7;display:flex;align-items:center;padding:18px 28px;gap:18px}.brand{display:flex;align-items:center;gap:14px}.logo{position:relative;width:62px;height:62px;border:5px solid var(--blue);background:#fff;flex:none}.logo:before{content:"";position:absolute;left:0;right:0;top:4px;height:8px;background:var(--yellow)}.tab1,.tab2{position:absolute;top:-13px;width:7px;height:13px}.tab1{left:9px;background:var(--orange)}.tab2{right:9px;background:var(--purple)}.play{position:absolute;inset:15px 0 0;display:grid;place-items:center;color:var(--blue);font-size:25px}.feet:before,.feet:after{content:"";position:absolute;bottom:-12px;width:4px;height:11px;background:var(--purple)}.feet:before{left:12px;transform:rotate(45deg)}.feet:after{right:12px;transform:rotate(-45deg)}.word{font-size:31px;font-weight:900;line-height:1;display:flex;align-items:baseline;gap:0;white-space:nowrap}.word span+span{margin-left:.28em}.word .tv{color:var(--blue)}.word .cal{color:var(--purple)}.tag{color:var(--orange);font-weight:900;margin-top:8px;font-size:17px;letter-spacing:.15px;text-shadow:0 1px 0 rgba(255,255,255,.8)}.profile{margin-left:auto;border:0;background:#f0edff;color:var(--purple);font-weight:800;padding:14px 20px}.shell{display:grid;grid-template-columns:226px minmax(0,1fr);min-height:calc(100vh - 108px)}.side{background:var(--side);border-right:1px solid var(--line);padding:18px 10px}.side button{display:block;width:100%;border:0;background:transparent;text-align:left;padding:15px 12px;margin-bottom:4px;font-weight:800;color:var(--ink)}.side button.active{background:var(--blue);color:#fff}.content{padding:20px 28px 48px;min-width:0}.content h1,.content h2{margin:0 0 10px}.sub{color:var(--muted);line-height:1.4}.fresh{color:var(--green);font-size:12px;font-weight:800;margin:18px 0 12px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0 28px}.stat,.card{background:#fff;border:1px solid var(--line);padding:18px}.stat b{display:block;font-size:28px;color:var(--blue)}.card{margin-bottom:12px}.showrow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center}.poster{width:58px;height:82px;object-fit:cover}.title{font-size:16px;font-weight:850}.pill{display:inline-block;margin-top:6px;padding:4px 7px;background:var(--side);font-size:11px;font-weight:800}.actions{display:flex;gap:8px}.btn{border:0;background:var(--purple);color:#fff;font-weight:800;padding:11px 15px}.danger{background:var(--red)}.search{width:100%;border:1px solid var(--line);background:#fff;padding:13px;margin:8px 0}.empty{padding:20px;border:1px solid #dcebf7;background:#fff;color:var(--muted)}.mobile-nav{display:none}
+@media(max-width:720px){body{padding-bottom:78px}.top{height:72px;padding:9px 10px;position:sticky;top:0;z-index:100}.brand{gap:9px;min-width:0}.logo{width:48px;height:42px;border-width:4px}.logo:before{top:5px;height:6px}.tab1,.tab2{top:-8px;width:5px;height:10px}.tab1{left:8px}.tab2{right:8px}.play{inset:8px 0 2px;font-size:15px}.feet:before,.feet:after{bottom:-8px;height:8px}.feet:before{left:8px}.feet:after{right:8px}.word{font-size:17px;gap:0;white-space:nowrap}.word span+span{margin-left:.28em}.tag{font-size:11px;margin-top:4px;white-space:nowrap;font-weight:900}.profile{padding:7px 6px;font-size:8px;white-space:nowrap}.shell{display:block;min-height:0}.side{display:none}.content{padding:16px 14px 24px}.stats{gap:7px}.stat{padding:12px 8px}.stat b{font-size:22px}.showrow{grid-template-columns:52px minmax(0,1fr);align-items:start}.poster{width:52px;height:72px}.actions{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;width:100%;margin-top:6px}.actions.single{grid-template-columns:1fr}.actions .btn{min-height:42px}.mobile-nav{position:fixed;left:0;right:0;bottom:0;height:72px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));background:#e7f5ff;border-top:1px solid var(--line);z-index:10000;padding:4px}.mobile-nav button{border:0;background:transparent;color:var(--ink);font-size:10px;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0}.mobile-nav button b{font-size:19px;line-height:1}.mobile-nav button.active{background:var(--blue);color:#fff}}.home-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}.home-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:14px 0 28px}.home-tile{border:0;background:#fff;padding:0;text-align:left;cursor:pointer;box-shadow:0 2px 12px rgba(17,27,49,.08);min-width:0;overflow:hidden}.home-tile>img,.home-poster-blank{width:100%;aspect-ratio:2/3;display:block;object-fit:cover;background:#dfeefa}.home-poster-blank{display:grid;place-items:center;font-size:30px;color:var(--blue)}.home-tile-info{padding:11px}.home-tile-info b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.home-tile-info span{display:block;color:var(--muted);font-size:12px;margin-top:5px}.home-section{margin-top:8px}.calendar-section{margin:0 0 25px}.calendar-card{width:100%;border:1px solid var(--line);background:#fff;padding:15px 17px;margin-bottom:9px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;text-align:left;align-items:center;cursor:pointer}.calendar-when{text-align:right}.calendar-when b,.calendar-when span{display:block}.calendar-when span{color:var(--muted);font-size:12px;margin-top:4px}
+@media(max-width:720px){.home-head{display:block}.home-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.home-tile-info{padding:7px 5px}.home-tile-info b{font-size:11px}.home-tile-info span{font-size:9px}.calendar-card{padding:12px 10px;gap:8px}.calendar-when{font-size:12px}.calendar-when span{font-size:10px}}
+.cal-head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:18px}.cal-controls{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);padding:7px 10px}.cal-controls button{border:0;background:var(--blue);color:#fff;width:36px;height:36px;font-size:24px;font-weight:900}.cal-controls b{min-width:150px;text-align:center}.cal-week,.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}.cal-week{background:var(--blue);color:#fff}.cal-week b{text-align:center;padding:10px 4px;font-size:12px}.cal-grid{border-left:1px solid var(--line);border-top:1px solid var(--line);background:#fff}.cal-day{min-height:132px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:7px;min-width:0}.muted-day{background:#f4f8fb}.cal-num{font-weight:900;font-size:13px;display:flex;justify-content:space-between}.cal-num span{font-size:9px;background:var(--orange);color:#fff;padding:3px 5px}.cal-today{background:#fff9e7;box-shadow:inset 0 0 0 2px var(--yellow)}.cal-events{margin-top:7px;display:grid;gap:5px}.cal-events button{border:0;border-left:3px solid var(--purple);background:#f1efff;text-align:left;padding:6px;min-width:0}.cal-events b,.cal-events span{display:block;overflow:hidden;text-overflow:ellipsis}.cal-events b{font-size:11px;white-space:nowrap}.cal-events span{font-size:9px;color:var(--muted);margin-top:2px}.cal-pending-title{margin-top:24px}
+@media(max-width:720px){.cal-head{display:block}.cal-controls{margin-top:12px;justify-content:space-between}.cal-controls b{min-width:0}.cal-week{position:sticky;top:72px;z-index:20}.cal-week b{font-size:9px;padding:8px 1px}.cal-day{min-height:86px;padding:3px}.cal-num{font-size:10px}.cal-num span{display:none}.cal-events{gap:3px;margin-top:4px}.cal-events button{padding:3px 2px;border-left-width:2px}.cal-events b{font-size:7px}.cal-events span{font-size:7px}.cal-grid{overflow:hidden}}
+
+/* V6.3.6 motion layer */
+@keyframes mytvRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes mytvPop{0%{opacity:0;transform:scale(.94)}70%{transform:scale(1.025)}100%{opacity:1;transform:scale(1)}}
+@keyframes mytvTag{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+@keyframes mytvPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+header .brand{animation:mytvPop .55s cubic-bezier(.2,.8,.2,1) both}
+header .tag{animation:mytvTag .55s ease-out .18s both}
+main .card,.home-tile,.calendar-card,.myshows-section{animation:mytvRise .38s ease-out both}
+main .card:nth-of-type(2),.home-tile:nth-child(2){animation-delay:.05s}
+main .card:nth-of-type(3),.home-tile:nth-child(3){animation-delay:.1s}
+.btn,.bottom-nav button,.side button,.cal-controls button,.cal-events button{transition:transform .16s ease,box-shadow .2s ease,background-color .2s ease,opacity .2s ease}
+.btn:active,.bottom-nav button:active,.side button:active,.cal-controls button:active,.cal-events button:active{transform:scale(.96)}
+.bottom-nav button.active,.side button.active{animation:mytvPop .3s ease-out}
+.home-tile img,.poster{transition:transform .3s ease}
+.home-tile:active img{transform:scale(1.025)}
+.cal-grid{animation:mytvRise .32s ease-out both}
+@media (hover:hover){.home-tile:hover img{transform:scale(1.025)}.btn:hover{transform:translateY(-1px)}}
+
+
+
+
+
+
+
+
+
+/* v6.3.27 original app motion restored + continuous greeting wave */
+.home-head h1{position:relative}
+
+#homeWaveHand{display:inline-block!important;visibility:visible!important;opacity:1!important;font-size:1em!important}
+
+/* v6.3.31 restore visible motion across current UI */
+.home-head{animation:mytvRise .5s ease-out both}
+.stats .stat{animation:mytvRise .5s ease-out both}
+.stats .stat:nth-child(2){animation-delay:.07s}
+.stats .stat:nth-child(3){animation-delay:.14s}
+.home-grid>*{animation:mytvRise .48s ease-out both}
+.home-grid>*:nth-child(2){animation-delay:.06s}
+.home-grid>*:nth-child(3){animation-delay:.12s}
+.home-grid>*:nth-child(4){animation-delay:.18s}
+.mobile-nav button.active,.bottom-nav button.active,.side button.active{animation:mytvPop .34s ease-out}
+.cal-grid{animation:mytvRise .42s ease-out both}
+
+/* v6.3.32 persistent app motion */
+@keyframes mytvFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes mytvGlowPulse{0%,100%{opacity:.72}50%{opacity:1}}
+header .logo{animation:mytvFloat 4.8s ease-in-out infinite}
+.fresh{animation:mytvGlowPulse 2.8s ease-in-out infinite}
+.home-grid>*{transition:transform .28s ease,box-shadow .28s ease}
+.home-grid>*:hover{transform:translateY(-4px)}
+.mobile-nav button,.side button{transition:transform .22s ease,opacity .22s ease}
+.mobile-nav button:active,.side button:active{transform:scale(.94)}
+
+/* v6.3.35 visible living app motion */
+@keyframes appBreathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes appShimmer{0%,100%{opacity:.72;transform:scale(1)}50%{opacity:1;transform:scale(1.035)}}
+.home-head .fresh{animation:appShimmer 3.8s ease-in-out infinite!important}
+.stats .stat:nth-child(1){animation:appBreathe 5.2s ease-in-out infinite!important}
+.stats .stat:nth-child(2){animation:appBreathe 5.2s ease-in-out .45s infinite!important}
+.stats .stat:nth-child(3){animation:appBreathe 5.2s ease-in-out .9s infinite!important}
+.home-grid>*{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s ease!important}
+.home-grid>*:active{transform:scale(.975)!important}
+.mobile-nav button.active,.side button.active{animation:mytvPulse 2.8s ease-in-out infinite!important}
+
+/* v6.3.36 restore floating navigation tabs */
+@keyframes tabFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.mobile-nav button,.bottom-nav button,.side button{animation:tabFloat 4.6s ease-in-out infinite!important;will-change:transform}
+.mobile-nav button:nth-child(2),.bottom-nav button:nth-child(2),.side button:nth-child(2){animation-delay:.35s!important}
+.mobile-nav button:nth-child(3),.bottom-nav button:nth-child(3),.side button:nth-child(3){animation-delay:.7s!important}
+.mobile-nav button:nth-child(4),.bottom-nav button:nth-child(4),.side button:nth-child(4){animation-delay:1.05s!important}
+.mobile-nav button:nth-child(5),.bottom-nav button:nth-child(5),.side button:nth-child(5){animation-delay:1.4s!important}
+.mobile-nav button:nth-child(6),.side button:nth-child(6){animation-delay:1.75s!important}
+.mobile-nav button:nth-child(7),.side button:nth-child(7){animation-delay:2.1s!important}
+.mobile-nav button:nth-child(8),.side button:nth-child(8){animation-delay:2.45s!important}
+
+/* v6.3.41 Discover redesign */
+.discover-head{margin-bottom:14px}.discover-head h2{margin-bottom:5px}
+.discover-chips{display:flex;gap:9px;overflow-x:auto;padding:4px 1px 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.discover-chips::-webkit-scrollbar{display:none}.discover-chips button{flex:0 0 auto;border:1px solid #d8e6f2;background:#fff;color:#13243b;border-radius:999px;padding:10px 17px;font:inherit;font-weight:800;box-shadow:0 3px 10px rgba(24,55,85,.06)}.discover-chips button:active{background:#7251f4;color:#fff;transform:scale(.97)}
+.discover-search{display:flex;align-items:center;background:#fff;border:1px solid #cfe0ee;border-radius:16px;overflow:hidden;box-shadow:0 5px 18px rgba(31,71,105,.07);margin:4px 0 24px}.discover-search .search{border:0!important;margin:0!important;box-shadow:none!important;flex:1;min-width:0;background:transparent}.discover-search button{width:58px;align-self:stretch;border:0;background:#359bea;color:#fff;font-size:27px;font-weight:900}
+.discover-title{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:12px}.discover-title b{font-size:20px}.discover-title span{font-size:12px;color:#70839a;text-align:right}
+.discover-results{margin-top:0!important}.discover-empty{background:linear-gradient(135deg,#fff,#f4f9ff);border:1px solid #d9e7f2;border-radius:18px;padding:26px 20px;color:#657a91;text-align:center;font-weight:700}
+@media(max-width:520px){.discover-title{align-items:flex-start;flex-direction:column;gap:3px}.discover-title span{text-align:left}}
+
+/* v6.3.45 selectable Discover results */
+.discover-pick{display:block;width:100%;text-align:left;border:0;font:inherit;color:inherit;cursor:pointer}.discover-pick:active{transform:scale(.985)}
+
+/* v6.3.51 clean upcoming movie cards */
+.movie-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}.movie-card{background:#fff;border:1px solid #d9e7f2;border-radius:18px;overflow:hidden;box-shadow:0 5px 18px rgba(31,71,105,.07)}.movie-card>img,.movie-no-poster{width:100%;aspect-ratio:2/3;object-fit:cover;display:block}.movie-no-poster{display:grid;place-items:center;background:#edf5fb;font-size:36px}.movie-card-info{padding:12px}.movie-card-info>b{display:block;font-size:14px;line-height:1.25;margin-bottom:5px}.movie-card-info>span{display:block;color:var(--muted);font-size:12px;margin-bottom:10px}.movie-card-info .btn{width:100%;border-radius:10px;padding:10px 8px}.movie-details{width:100%;border:0;background:transparent;color:var(--blue);font-weight:800;padding:10px 0 0}.movie-card .btn:disabled{background:#dce8f2;color:#61768b}@media(max-width:520px){.movie-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.movie-card{border-radius:14px}.movie-card-info{padding:9px}.movie-card-info>b{font-size:12px}}
+
+/* v6.3.52 always-visible Upcoming Movies control */
+.movies-main-btn{display:block;width:100%;border:0;border-radius:16px;background:var(--purple);color:#fff;font-weight:900;font-size:15px;padding:14px 16px;margin:0 0 14px;box-shadow:0 5px 16px rgba(112,87,245,.2)}.movies-main-btn:active{transform:scale(.98)}.discover-chips-spacer{display:none!important}
+
+/* v6.3.54 five Discover buttons in one row */
+.discover-chips.five-chips{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;overflow:visible!important;width:100%;padding:4px 0 14px}.discover-chips.five-chips button{min-width:0!important;width:100%;padding:10px 4px!important;font-size:13px;white-space:nowrap}.movies-main-btn{display:none!important}@media(max-width:520px){.discover-chips.five-chips{gap:5px}.discover-chips.five-chips button{padding:9px 2px!important;font-size:11px}}
+
+/* v6.3.55 preferred Discover layout: four categories + Movies below */
+.discover-chips{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;overflow:visible!important;width:100%;padding:4px 0 10px}.discover-chips button{min-width:0!important;width:100%;padding:10px 4px!important;white-space:nowrap}.movies-main-btn{display:block!important;width:100%;margin:0 0 14px}@media(max-width:520px){.discover-chips{gap:5px}.discover-chips button{font-size:12px;padding:9px 2px!important}}
+
+/* v6.3.56 restore five buttons in one row */
+.discover-chips.five-chips{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:5px!important;overflow:visible!important;width:100%;padding:4px 0 14px!important}.discover-chips.five-chips button{min-width:0!important;width:100%!important;padding:9px 2px!important;font-size:11px!important;white-space:nowrap!important}.movies-main-btn{display:none!important}
+
+/* v6.3.57 selected Discover category */
+.discover-chips button.active{background:var(--purple)!important;color:#fff!important;border-color:var(--purple)!important;box-shadow:0 4px 12px rgba(112,87,245,.28)!important}
+
+/* v6.3.58 My Shows TV/Movie Watchlist tabs */
+.myshows-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 14px;padding:4px;background:#edf3f8;border-radius:14px}.myshows-tabs button{border:0;background:transparent;border-radius:10px;padding:11px 8px;font:inherit;font-weight:900;color:#61768b}.myshows-tabs button.active{background:var(--purple);color:#fff;box-shadow:0 4px 12px rgba(112,87,245,.24)}.watchlist-count{margin-bottom:14px}.movie-remove{width:100%;border:0;background:transparent;color:#b24a5a;font-weight:800;padding:10px 0 0}.movie-watchlist-empty{margin-top:14px}.watchlist-grid{margin-top:4px}
