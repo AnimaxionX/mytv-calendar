@@ -78,3 +78,11 @@ header .logo{animation:mytvFloat 4.8s ease-in-out infinite}
 .mobile-nav button:nth-child(6),.side button:nth-child(6){animation-delay:1.75s!important}
 .mobile-nav button:nth-child(7),.side button:nth-child(7){animation-delay:2.1s!important}
 .mobile-nav button:nth-child(8),.side button:nth-child(8){animation-delay:2.45s!important}
+
+/* v6.3.41 Discover redesign */
+.discover-head{margin-bottom:14px}.discover-head h2{margin-bottom:5px}
+.discover-chips{display:flex;gap:9px;overflow-x:auto;padding:4px 1px 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.discover-chips::-webkit-scrollbar{display:none}.discover-chips button{flex:0 0 auto;border:1px solid #d8e6f2;background:#fff;color:#13243b;border-radius:999px;padding:10px 17px;font:inherit;font-weight:800;box-shadow:0 3px 10px rgba(24,55,85,.06)}.discover-chips button:active{background:#7251f4;color:#fff;transform:scale(.97)}
+.discover-search{display:flex;align-items:center;background:#fff;border:1px solid #cfe0ee;border-radius:16px;overflow:hidden;box-shadow:0 5px 18px rgba(31,71,105,.07);margin:4px 0 24px}.discover-search .search{border:0!important;margin:0!important;box-shadow:none!important;flex:1;min-width:0;background:transparent}.discover-search button{width:58px;align-self:stretch;border:0;background:#359bea;color:#fff;font-size:27px;font-weight:900}
+.discover-title{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:12px}.discover-title b{font-size:20px}.discover-title span{font-size:12px;color:#70839a;text-align:right}
+.discover-results{margin-top:0!important}.discover-empty{background:linear-gradient(135deg,#fff,#f4f9ff);border:1px solid #d9e7f2;border-radius:18px;padding:26px 20px;color:#657a91;text-align:center;font-weight:700}
+@media(max-width:520px){.discover-title{align-items:flex-start;flex-direction:column;gap:3px}.discover-title span{text-align:left}}
