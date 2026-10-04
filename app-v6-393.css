@@ -161,3 +161,17 @@ input,select,textarea,button{max-width:100%;min-width:0}
   .calendar-when{text-align:left}
   .actions{grid-template-columns:1fr}
 }
+
+/* V6.4.11 keep Home shows four-across on phones */
+@media(max-width:720px){
+  .home-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:7px}
+  .home-tile{min-width:0;width:100%}
+  .home-tile>img,.home-poster-blank{width:100%;max-width:100%;aspect-ratio:2/3;object-fit:cover}
+  .home-tile-info{padding:7px 4px}
+  .home-tile-info b{font-size:clamp(8px,2.7vw,11px)}
+  .home-tile-info span{font-size:clamp(7px,2.3vw,9px)}
+}
+@media(max-width:360px){
+  .home-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:4px}
+  .home-tile-info{padding:5px 2px}
+}
