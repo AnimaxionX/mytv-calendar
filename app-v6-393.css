@@ -214,3 +214,30 @@ input,select,textarea,button{max-width:100%;min-width:0}
   .mobile-nav button{transform:none}
   .mobile-nav button.active{animation:none!important}
 }
+
+/* V6.4.15 Firefox/Android viewport correction */
+@media(max-width:720px){
+  body{padding-bottom:72px!important}
+  .shell{min-height:0!important}
+  .content{padding-bottom:20px!important}
+  .top{padding-top:9px!important;min-height:72px!important;height:72px!important;overflow:hidden!important}
+  .brand{height:54px!important;overflow:visible!important}
+  .logo{width:48px!important;height:48px!important;margin:0!important;transform:scale(.88)!important;transform-origin:center!important}
+  .mobile-nav{
+    position:fixed!important;
+    inset:auto 0 0 0!important;
+    height:72px!important;
+    min-height:72px!important;
+    padding:4px 4px max(4px,env(safe-area-inset-bottom,0px))!important;
+    transform:none!important;
+    animation:none!important;
+    contain:none!important;
+  }
+  .mobile-nav button,.mobile-nav button.active{
+    height:64px!important;
+    min-height:0!important;
+    transform:none!important;
+    animation:none!important;
+    margin:0!important;
+  }
+}
