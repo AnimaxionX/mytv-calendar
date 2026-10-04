@@ -175,3 +175,42 @@ input,select,textarea,button{max-width:100%;min-width:0}
   .home-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:4px}
   .home-tile-info{padding:5px 2px}
 }
+
+/* V6.4.14 stable mobile viewport + safe-area fix */
+@media(max-width:720px){
+  html{height:100%;overflow-x:hidden}
+  body{min-height:100dvh;overflow-x:hidden;padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+  .top{
+    box-sizing:border-box;
+    min-height:72px;height:auto;
+    padding-top:max(12px,env(safe-area-inset-top,0px));
+    padding-bottom:9px;
+    overflow:visible;
+  }
+  .brand{overflow:visible;align-items:center}
+  .logo{
+    width:44px;height:44px;
+    margin-top:4px;
+    flex:0 0 44px;
+    transform:none;
+  }
+  .tab1,.tab2{top:-6px}
+  .brand>div:last-child{max-width:calc(100% - 52px)}
+  .shell{min-height:calc(100dvh - 72px)}
+  .content{padding-bottom:24px}
+  .mobile-nav{
+    position:fixed!important;
+    left:0!important;right:0!important;bottom:0!important;
+    width:100%!important;
+    height:calc(72px + env(safe-area-inset-bottom,0px))!important;
+    min-height:calc(72px + env(safe-area-inset-bottom,0px));
+    padding-top:4px;
+    padding-bottom:max(4px,env(safe-area-inset-bottom,0px));
+    transform:none!important;
+    margin:0!important;
+    align-self:auto!important;
+    contain:layout paint;
+  }
+  .mobile-nav button{transform:none}
+  .mobile-nav button.active{animation:none!important}
+}
