@@ -120,3 +120,44 @@ header .logo{animation:mytvFloat 4.8s ease-in-out infinite}
 /* Single custom password visibility control: suppress browser-native reveal UI */
 input.pw-custom::-ms-reveal,input.pw-custom::-ms-clear{display:none!important;width:0;height:0}
 input.pw-custom::-webkit-credentials-auto-fill-button,input.pw-custom::-webkit-contacts-auto-fill-button{visibility:hidden!important;display:none!important;pointer-events:none!important;position:absolute;right:0}
+
+/* V6.4.10 universal phone auto-fit */
+html{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%}
+body{width:100%;max-width:100%;overflow-x:hidden}
+img,video,svg,canvas{max-width:100%;height:auto}
+.content,.card,.stat,.showrow,.calendar-card,.home-tile,.cal-head,.cal-controls{max-width:100%;min-width:0}
+.title,.sub,.card,.stat,.calendar-card,.home-tile-info,.content{overflow-wrap:anywhere;word-break:normal}
+input,select,textarea,button{max-width:100%;min-width:0}
+@media(max-width:720px){
+  .top{width:100%;max-width:100%;padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right))}
+  .brand{width:100%;max-width:100%;overflow:hidden}
+  .brand>div:last-child{min-width:0;max-width:calc(100% - 55px)}
+  .word{font-size:clamp(13px,4.5vw,17px);max-width:100%;overflow:hidden}
+  .tag{font-size:clamp(8px,2.8vw,11px);max-width:100%;overflow:hidden;text-overflow:ellipsis}
+  .content{width:100%;max-width:100%;padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right));overflow-x:hidden}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .stat{min-width:0;padding:10px 5px}
+  .stat b{font-size:clamp(17px,6vw,22px)}
+  .home-grid{grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+  .showrow{width:100%;grid-template-columns:minmax(44px,52px) minmax(0,1fr)}
+  .actions{width:100%;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .actions .btn,.btn{white-space:normal;overflow-wrap:anywhere}
+  .cal-head{width:100%;overflow:hidden}
+  .cal-controls{width:100%;gap:6px}
+  .cal-controls b{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cal-week,.cal-grid{width:100%;min-width:0}
+  .cal-day{min-width:0;overflow:hidden}
+  .calendar-card{grid-template-columns:minmax(0,1fr) minmax(72px,auto)}
+  .mobile-nav{width:100%;max-width:100%;left:0;right:0;padding-left:max(2px,env(safe-area-inset-left));padding-right:max(2px,env(safe-area-inset-right));padding-bottom:max(4px,env(safe-area-inset-bottom));height:calc(72px + env(safe-area-inset-bottom))}
+  .mobile-nav button{font-size:clamp(8px,2.5vw,10px);overflow:hidden}
+}
+@media(max-width:360px){
+  .content{padding-left:8px;padding-right:8px}
+  .logo{width:42px}
+  .brand>div:last-child{max-width:calc(100% - 48px)}
+  .home-grid{gap:6px}
+  .stats{gap:4px}
+  .calendar-card{grid-template-columns:minmax(0,1fr)}
+  .calendar-when{text-align:left}
+  .actions{grid-template-columns:1fr}
+}
