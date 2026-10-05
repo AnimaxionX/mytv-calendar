@@ -1,1 +1,1 @@
-My TV Calendar V6.4.34 — OneSignal worker path + enable feedback fix — 2026-10-05
+My TV Calendar V6.4.35 — restored proven OneSignal initialization path — 2026-10-05
