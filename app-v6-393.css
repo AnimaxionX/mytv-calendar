@@ -258,11 +258,8 @@ input,select,textarea,button{max-width:100%;min-width:0}
 @keyframes launchOut{to{opacity:0;visibility:hidden;pointer-events:none;transform:scale(1.025)}}
 @media(prefers-reduced-motion:reduce){.launch-intro{animation:launchOut .2s linear .8s forwards}.launch-mark,.launch-tv,.launch-glow,.launch-welcome,.launch-tagline{animation:none!important}}
 
-/* V6.4.21 app-like scrolling: disable browser pull-to-refresh / scroll chaining */
-html,body{overscroll-behavior:none!important}
-body{overscroll-behavior-y:none!important}
-.content,.shell{overscroll-behavior:contain!important}
-@media(max-width:720px){
- html,body{overscroll-behavior-y:none!important}
- body{touch-action:pan-x pan-y}
-}
+
+/* V6.4.22 mobile scroll repair */
+html{overscroll-behavior-y:none!important}
+body{overscroll-behavior-y:none!important;touch-action:auto!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch}
+.shell,.content{overscroll-behavior-y:contain!important;touch-action:auto!important}
