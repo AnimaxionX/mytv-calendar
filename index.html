@@ -8,7 +8,7 @@
   }
  }catch(e){}
  if("serviceWorker" in navigator){
-  navigator.serviceWorker.register("sw.js?v=6.4.32",{scope:"./"}).then(r=>r.update()).catch(()=>{});
+  navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>{if(!r.scope.includes("/push/"))r.unregister()})).catch(()=>{});
  }
  fetch("build-version.txt?ts="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{
   const m=t.match(/V(\d+\.\d+\.\d+)/);
@@ -18,4 +18,4 @@
   });
  }).catch(()=>{});
 })();
-</script><script src="app-v6-393.js?v=6.4.32-label2"></script></body></html>
+</script><script src="app-v6-393.js?v=6.4.32-notifyfix1"></script></body></html>
