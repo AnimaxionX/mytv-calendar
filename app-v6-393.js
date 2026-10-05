@@ -1,27 +1,18 @@
 const SUPABASE_URL="https://zvzrstudexfhzvnycfko.supabase.co";const SUPABASE_ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp2enJzdHVkZXhmaHp2bnljZmtvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5MzU2OTAsImV4cCI6MjEwNjUxMTY5MH0.U07bw1kyiU3HKE4j_if5HQlEkWAc3tqpYsv0vyp8brY";const SB=window.supabase?.createClient?window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON):null;async function realProviders(name,type='tv',id=''){try{const r=await fetch(SUPABASE_URL+"/functions/v1/where-to-watch?query="+encodeURIComponent(name)+"&type="+encodeURIComponent(type)+(id?"&id="+encodeURIComponent(id):""),{headers:{apikey:SUPABASE_ANON,Authorization:"Bearer "+SUPABASE_ANON}});if(!r.ok)throw Error();return await r.json()}catch{return null}}let oneSignalInitPromise=null;
 async function oneSignalReady(){
  if(window.MyTVOneSignal)return window.MyTVOneSignal;
+ if(window.MyTVOneSignalError)throw Error('OneSignal initialization failed: '+(window.MyTVOneSignalError.message||String(window.MyTVOneSignalError)));
  if(oneSignalInitPromise)return oneSignalInitPromise;
  oneSignalInitPromise=new Promise((resolve,reject)=>{
-  let settled=false;
-  const timer=setTimeout(()=>{if(!settled){settled=true;reject(Error('OneSignal SDK did not initialize within 20 seconds.'))}},20000);
-  window.OneSignalDeferred=window.OneSignalDeferred||[];
-  window.OneSignalDeferred.push(async function(OneSignal){
-   if(settled)return;
-   try{
-    await OneSignal.init({
-     appId:"6a45a10e-487b-4a01-9ab4-ed5e9c332660",
-     serviceWorkerPath:"mytv-calendar/push/onesignal/OneSignalSDKWorker.js",
-     serviceWorkerParam:{scope:"/mytv-calendar/push/onesignal/"},
-     notifyButton:{enable:false}
-    });
-    window.MyTVOneSignal=OneSignal;
-    settled=true;clearTimeout(timer);resolve(OneSignal);
-   }catch(e){
-    settled=true;clearTimeout(timer);oneSignalInitPromise=null;
-    reject(Error('OneSignal initialization failed: '+(e&&e.message?e.message:String(e))));
-   }
-  });
+  let done=false;
+  const ok=()=>{if(done)return;done=true;cleanup();resolve(window.MyTVOneSignal)},
+        bad=()=>{if(done)return;done=true;cleanup();reject(Error('OneSignal initialization failed: '+(window.MyTVOneSignalError?.message||String(window.MyTVOneSignalError||'unknown error'))))},
+        cleanup=()=>{clearTimeout(timer);window.removeEventListener('mytv-onesignal-ready',ok);window.removeEventListener('mytv-onesignal-error',bad)};
+  window.addEventListener('mytv-onesignal-ready',ok,{once:true});
+  window.addEventListener('mytv-onesignal-error',bad,{once:true});
+  if(window.MyTVOneSignal)return ok();
+  if(window.MyTVOneSignalError)return bad();
+  const timer=setTimeout(()=>{if(done)return;done=true;cleanup();reject(Error('OneSignal SDK did not initialize within 20 seconds.'))},20000);
  });
  return oneSignalInitPromise;
 }
@@ -181,7 +172,7 @@ function setNotificationPref(k,v){const p=notificationPrefs();p[k]=!!v;save('myt
 async function settings(){
  const plan=await getCurrentPlan(),level=PLAN_LEVELS[plan]||0,p=notificationPrefs();
  const row=(k,label,desc,need=0,badge='Free')=>{const locked=level<need;return '<label class="card" style="display:flex;align-items:center;justify-content:space-between;gap:14px;'+(locked?'opacity:.5;':'')+'"><div><div class="title">'+label+(locked?' <span class="sub">• '+badge+'</span>':'')+'</div><div class="sub">'+desc+'</div></div><input type="checkbox" '+(!locked&&p[k]?'checked':'')+' '+(locked?'disabled':'onchange="setNotificationPref(\''+k+'\',this.checked)"')+' style="width:22px;height:22px;flex:0 0 auto"></label>'};
- V.innerHTML='<h2>Settings</h2><div class="card"><div class="title">Push Notifications</div><div class="sub">Enable notifications, then choose the reminders included with your plan.</div><button type="button" id="push-toggle" class="btn" data-push="on" style="margin-top:12px">Enable Push Notifications</button><div id="push-msg" class="sub" style="margin-top:10px"></div></div><div class="title" style="margin:18px 0 10px">Notification Preferences</div>'+row('showToday','📺 Show Airing Today','Remind me when a followed show has a new episode today.',0,'Free')+row('movieToday','🎬 Movie Release Today','Remind me when a movie in my Watchlist releases today.',1,'Calendar+')+row('dateChanges','📅 Release Date Changes','Tell me when a followed show or movie release date changes.',1,'Calendar+')+row('showSoon','⏰ Show Starting Soon','Remind me shortly before a followed show starts.',2,'Pro')+row('newSeason','✨ New Season / Premiere','Tell me when a followed show begins a new season.',2,'Pro')+row('appUpdates','🔔 My TV Calendar Updates','Important app and account announcements.',0,'Free')+'<div class="card">My TV Calendar V6.4.40</div>';
+ V.innerHTML='<h2>Settings</h2><div class="card"><div class="title">Push Notifications</div><div class="sub">Enable notifications, then choose the reminders included with your plan.</div><button type="button" id="push-toggle" class="btn" data-push="on" style="margin-top:12px">Enable Push Notifications</button><div id="push-msg" class="sub" style="margin-top:10px"></div></div><div class="title" style="margin:18px 0 10px">Notification Preferences</div>'+row('showToday','📺 Show Airing Today','Remind me when a followed show has a new episode today.',0,'Free')+row('movieToday','🎬 Movie Release Today','Remind me when a movie in my Watchlist releases today.',1,'Calendar+')+row('dateChanges','📅 Release Date Changes','Tell me when a followed show or movie release date changes.',1,'Calendar+')+row('showSoon','⏰ Show Starting Soon','Remind me shortly before a followed show starts.',2,'Pro')+row('newSeason','✨ New Season / Premiere','Tell me when a followed show begins a new season.',2,'Pro')+row('appUpdates','🔔 My TV Calendar Updates','Important app and account announcements.',0,'Free')+'<div class="card">My TV Calendar V6.4.41</div>';
  renderPushButton();
 }
 const BILLING_PORTAL='https://billing.stripe.com/p/login/8x24gycwP7vC7kT1Aeco000';
