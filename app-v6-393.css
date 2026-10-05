@@ -261,8 +261,12 @@ input,select,textarea,button{max-width:100%;min-width:0}
 
 
 
-/* V6.4.24 definitive mobile document scrolling */
-html{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:visible!important;overscroll-behavior-y:none!important}
-body{height:auto!important;min-height:100dvh!important;max-height:none!important;overflow-x:hidden!important;overflow-y:visible!important;position:static!important;touch-action:auto!important;overscroll-behavior-y:none!important}
-.shell{height:auto!important;min-height:calc(100dvh - 72px)!important;max-height:none!important;overflow:visible!important;touch-action:auto!important}
-.content{height:auto!important;max-height:none!important;overflow:visible!important;touch-action:auto!important;padding-bottom:92px!important}
+
+/* V6.4.25 mobile scrolling reset */
+@media(max-width:720px){
+ html,body{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;touch-action:pan-y!important;overscroll-behavior-y:auto!important}
+ body{position:relative!important;padding-bottom:78px!important;-webkit-overflow-scrolling:touch!important}
+ .shell{display:block!important;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important}
+ .content{height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;touch-action:pan-y!important;padding-bottom:24px!important}
+ .mobile-nav{position:fixed!important;bottom:0!important}
+}
