@@ -270,3 +270,17 @@ input,select,textarea,button{max-width:100%;min-width:0}
  .content{padding:16px 14px 24px!important}
  .mobile-nav{position:fixed!important;left:0!important;right:0!important;bottom:0!important}
 }
+
+
+/* V6.4.28 disable pull-to-refresh without blocking native vertical scroll */
+html,body{
+  overscroll-behavior-y:none;
+}
+@media(max-width:720px){
+  html,body{
+    overflow-y:auto!important;
+    touch-action:pan-y!important;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:none!important;
+  }
+}
