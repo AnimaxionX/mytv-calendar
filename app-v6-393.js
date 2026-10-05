@@ -234,19 +234,3 @@ if(SB)SB.auth.onAuthStateChange((event,session)=>{if(event==='PASSWORD_RECOVERY'
 (async()=>{if(SB){try{const {data}=await SB.auth.getSession();const h=new URLSearchParams(location.hash.replace(/^#/,''));if((h.get('type')==='recovery'||qs.get('type')==='recovery')&&data?.session){recoveryMode=true;passwordRecoveryScreen();return}}catch{}}
 if(!recoveryMode){reconcileNotificationRegistration().catch(()=>{});if(qs.get('payment')==='success'||qs.get('route')==='subscriptions')go('subscriptions');else go('home')}})();
 setTimeout(()=>refreshFollowedSchedules(),150);
-/* V6.4.27 pull-to-refresh guard */
-(()=>{
- let startY=0, guarding=false;
- document.addEventListener('touchstart',e=>{
-   if(e.touches.length!==1)return;
-   startY=e.touches[0].clientY;
-   guarding=(window.scrollY<=0);
- },{passive:true});
- document.addEventListener('touchmove',e=>{
-   if(!guarding||e.touches.length!==1)return;
-   const dy=e.touches[0].clientY-startY;
-   if(dy>0&&window.scrollY<=0)e.preventDefault();
- },{passive:false});
- document.addEventListener('touchend',()=>{guarding=false},{passive:true});
- document.addEventListener('touchcancel',()=>{guarding=false},{passive:true});
-})();
