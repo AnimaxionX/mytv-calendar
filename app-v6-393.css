@@ -241,3 +241,19 @@ input,select,textarea,button{max-width:100%;min-width:0}
     margin:0!important;
   }
 }
+
+/* V6.4.18 cinematic startup */
+.launch-intro{position:fixed;inset:0;z-index:999999;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 50% 42%,#123b64 0,#06192d 42%,#020914 100%);animation:launchOut .55s ease 2.35s forwards}
+.launch-glow{position:absolute;width:72vmax;height:72vmax;border-radius:50%;background:radial-gradient(circle,rgba(66,177,255,.28),transparent 60%);animation:launchGlow 1.8s ease-in-out infinite}
+.launch-mark{position:relative;text-align:center;padding:24px;animation:launchRise .8s cubic-bezier(.2,.8,.2,1) both}
+.launch-tv{width:82px;height:64px;margin:0 auto 18px;border:3px solid #8bd0ff;border-radius:16px;display:grid;place-items:center;font-size:25px;color:white;box-shadow:0 0 28px rgba(74,179,255,.65),inset 0 0 20px rgba(74,179,255,.16);animation:launchPulse 1.3s ease-in-out infinite}
+.launch-title{font-size:clamp(28px,8vw,48px);font-weight:900;letter-spacing:-1.5px;color:#fff;white-space:nowrap;text-shadow:0 0 20px rgba(83,185,255,.35)}
+.launch-title b{color:#58b9ff}.launch-title em{font-style:normal;color:#dff3ff}
+.launch-welcome{margin-top:19px;font-weight:900;font-size:clamp(16px,4.5vw,22px);letter-spacing:5px;color:#fff;animation:launchText .7s ease .35s both}
+.launch-tagline{margin-top:9px;font-size:clamp(11px,3.2vw,15px);letter-spacing:.5px;color:#9dd8ff;animation:launchText .7s ease .62s both}
+@keyframes launchRise{from{opacity:0;transform:translateY(22px) scale(.88);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes launchText{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes launchPulse{50%{transform:scale(1.06);box-shadow:0 0 42px rgba(74,179,255,.9),inset 0 0 25px rgba(74,179,255,.22)}}
+@keyframes launchGlow{50%{transform:scale(1.12);opacity:.7}}
+@keyframes launchOut{to{opacity:0;visibility:hidden;pointer-events:none;transform:scale(1.025)}}
+@media(prefers-reduced-motion:reduce){.launch-intro{animation:launchOut .2s linear .8s forwards}.launch-mark,.launch-tv,.launch-glow,.launch-welcome,.launch-tagline{animation:none!important}}
