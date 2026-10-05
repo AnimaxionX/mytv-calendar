@@ -1,1 +1,1 @@
-My TV Calendar V6.4.32 — verified V6.4.20 baseline + saved-app refresh — 2026-10-05
+My TV Calendar V6.4.33 — notification worker fix + verified scroll baseline — 2026-10-05
