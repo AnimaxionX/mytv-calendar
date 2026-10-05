@@ -1,6 +1,6 @@
-const CACHE='mytv-v6.4.51';
+const CACHE='mytv-v6.4.52';
 self.addEventListener('install',()=>self.skipWaiting());
 self.addEventListener('activate',e=>e.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)));await self.clients.claim()})()));
 self.addEventListener('fetch',e=>{if(e.request.mode==='navigate'){e.respondWith(fetch(e.request,{cache:'no-store'}).catch(()=>caches.match(e.request)));return}e.respondWith(fetch(e.request,{cache:'no-store'}).catch(()=>caches.match(e.request)))});
-self.addEventListener('push',e=>{let d={title:'My TV Calendar',body:'You have a new TV update.',url:'./?v=6.4.51&source=pwa'};try{d={...d,...e.data.json()}}catch{}e.waitUntil(self.registration.showNotification(d.title,{body:d.body,tag:d.tag||'mytv-update',data:{url:d.url||'./?v=6.4.51&source=pwa'}}))});
-self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(ws=>{for(const w of ws){if('focus'in w){w.navigate(e.notification.data?.url||'./?v=6.4.51&source=pwa');return w.focus()}}return clients.openWindow(e.notification.data?.url||'./?v=6.4.51&source=pwa')}))});
+self.addEventListener('push',e=>{let d={title:'My TV Calendar',body:'You have a new TV update.',url:'./?v=6.4.52&source=pwa'};try{d={...d,...e.data.json()}}catch{}e.waitUntil(self.registration.showNotification(d.title,{body:d.body,tag:d.tag||'mytv-update',data:{url:d.url||'./?v=6.4.52&source=pwa'}}))});
+self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(ws=>{for(const w of ws){if('focus'in w){w.navigate(e.notification.data?.url||'./?v=6.4.52&source=pwa');return w.focus()}}return clients.openWindow(e.notification.data?.url||'./?v=6.4.52&source=pwa')}))});
