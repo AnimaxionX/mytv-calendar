@@ -262,11 +262,11 @@ input,select,textarea,button{max-width:100%;min-width:0}
 
 
 
-/* V6.4.25 mobile scrolling reset */
+
+/* V6.4.26 restore original mobile scrolling */
 @media(max-width:720px){
- html,body{height:auto!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important;touch-action:pan-y!important;overscroll-behavior-y:auto!important}
- body{position:relative!important;padding-bottom:78px!important;-webkit-overflow-scrolling:touch!important}
- .shell{display:block!important;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important}
- .content{height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;touch-action:pan-y!important;padding-bottom:24px!important}
- .mobile-nav{position:fixed!important;bottom:0!important}
+ body{padding-bottom:78px!important}
+ .shell{display:block!important;min-height:0!important}
+ .content{padding:16px 14px 24px!important}
+ .mobile-nav{position:fixed!important;left:0!important;right:0!important;bottom:0!important}
 }
