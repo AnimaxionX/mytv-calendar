@@ -1,7 +1,7 @@
 {
   "name": "My TV Calendar",
   "short_name": "My TV Calendar",
-  "start_url": "./?source=pwa",
+  "start_url": "./?v=6.4.31&source=pwa",
   "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
