@@ -93,7 +93,7 @@ function calKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,
 function shiftCalendar(n){calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()+n,1);calendar()}
 function calendar(){
  const y=calendarCursor.getFullYear(),m=calendarCursor.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0),lead=first.getDay(),today=calKey(new Date());
- const byDate={};shows.forEach(s=>{const entries=(episodeHistory[String(s.id)]||[]).filter(e=>e.airdate);if(s.airdate&&!entries.some(e=>e.airdate===s.airdate))entries.push({airdate:s.airdate,airtime:s.airtime||'',name:s.next_episode||''});entries.forEach(e=>{const item={...s,airdate:e.airdate,airtime:e.airtime||'',next_episode:e.name||''};(byDate[e.airdate]||(byDate[e.airdate]=[])).push(item)})});
+ const byDate={};shows.forEach(s=>{const entries=(episodeHistory[String(s.id)]||[]).filter(e=>e.airdate);if(s.airdate&&!entries.some(e=>e.airdate===s.airdate))entries.push({airdate:s.airdate,airtime:s.airtime||'',name:s.next_episode||''});const dates=[...new Set(entries.map(e=>e.airdate))];dates.forEach(date=>{const day=entries.filter(e=>e.airdate===date);const first=day[0];const item={...s,airdate:date,airtime:first?.airtime||'',next_episode:day.length>1?day.length+' episodes':first?.name||''};(byDate[date]||(byDate[date]=[])).push(item)})});
  Object.values(byDate).forEach(a=>a.sort((a,b)=>showStart(a)-showStart(b)));
  let cells='';for(let i=0;i<lead;i++)cells+='<div class="cal-day muted-day"></div>';
  for(let d=1;d<=last.getDate();d++){const key=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'),a=byDate[key]||[];
