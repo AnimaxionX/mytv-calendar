@@ -4,19 +4,23 @@ on:
   push:
     branches: [main]
     paths:
+      - 'index.html'
+      - 'app-v6-393.js'
+      - 'app-v6-393.css'
+      - 'manifest.webmanifest'
+      - 'build-version.txt'
       - '.github/workflows/package.yml'
 jobs:
   package:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Prepare package
+      - name: Prepare current release package
         run: |
-          mkdir package
-          cp index.html app-v6.css app-v6.js manifest.webmanifest sw.js build-version.txt desktop-mobile.css desktop-parity.css package/
-          mkdir -p package/push/onesignal
-          cp push/onesignal/OneSignalSDKWorker.js package/push/onesignal/
+          mkdir -p package
+          cp index.html mytv-current.html app-v6-393.css app-v6-393.js manifest.webmanifest build-version.txt package/
+          cp -R push package/ || true
       - uses: actions/upload-artifact@v4
         with:
-          name: MyTV-Calendar-V6.1.9-OneSignal-Push
+          name: MyTV-Calendar-Current
           path: package/
