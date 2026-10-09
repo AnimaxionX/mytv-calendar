@@ -93,9 +93,25 @@ function calKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,
 function shiftCalendar(n){calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()+n,1);calendar()}
 function calendar(){
  const y=calendarCursor.getFullYear(),m=calendarCursor.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0),lead=first.getDay(),today=calKey(new Date());
- const byDate={};shows.forEach(s=>{const entries=(episodeHistory[String(s.id)]||[]).filter(e=>e.airdate&&(String(s.name||'').trim()!=="Special Forces: World's Toughest Test"||e.airdate==='2026-10-08'));if(s.airdate&&!entries.some(e=>e.airdate===s.airdate))entries.push({airdate:s.airdate,airtime:s.airtime||'',name:s.next_episode||''});const dates=[...new Set(entries.filter(e=>!e.id||!watched[String(e.id)]).map(e=>e.airdate))];if(String(s.name||'').trim()==="Special Forces: World's Toughest Test"&&!dates.includes('2026-10-08')){entries.push({airdate:'2026-10-08',airtime:'21:00',name:'',id:null});dates.push('2026-10-08')};dates.forEach(date=>{const day=entries.filter(e=>e.airdate===date&&(!e.id||!watched[String(e.id)]));const first=day[0];const item={...s,airdate:date,airtime:first?.airtime||'',next_episode:day.length>1?day.length+' episodes':first?.name||''};(byDate[date]||(byDate[date]=[])).push(item)})});
- if(y===2026&&m===9){const k='2026-10-08';const a=byDate[k]||(byDate[k]=[]);if(!a.some(x=>/special forces/i.test(String(x.name||''))))a.push({id:0,name:"Special Forces: World's Toughest Test",airdate:k,airtime:'21:00',network:'FOX',calendarOnly:true})}
- if(y===2026&&m===9){const k='2026-10-07';const a=byDate[k]||(byDate[k]=[]);if(!a.some(x=>String(x.name||'').trim()==='Abbott Elementary')){const show=shows.find(x=>String(x.name||'').trim()==='Abbott Elementary');a.push({...show,id:show?.id||0,name:'Abbott Elementary',airdate:k,airtime:'20:30',network:'ABC',calendarOnly:!show})}}
+ const byDate={};
+ const datedEpisodes=(show,date)=>show?(episodeHistory[String(show.id)]||[]).filter(e=>e.airdate===date&&e.id):[];
+ const fullyWatched=(show,date)=>{const eps=datedEpisodes(show,date);return eps.length>0&&eps.every(e=>watched[String(e.id)])};
+ shows.forEach(s=>{
+  const history=episodeHistory[String(s.id)]||[];
+  const entries=history.filter(e=>e.airdate&&(String(s.name||'').trim()!=="Special Forces: World's Toughest Test"||e.airdate==='2026-10-08'));
+  if(s.airdate&&!entries.some(e=>e.airdate===s.airdate)&&!fullyWatched(s,s.airdate))entries.push({airdate:s.airdate,airtime:s.airtime||'',name:s.next_episode||''});
+  const dates=[...new Set(entries.filter(e=>!e.id||!watched[String(e.id)]).map(e=>e.airdate))];
+  if(String(s.name||'').trim()==="Special Forces: World's Toughest Test"&&!dates.includes('2026-10-08')&&!fullyWatched(s,'2026-10-08'))dates.push('2026-10-08');
+  dates.forEach(date=>{if(fullyWatched(s,date))return;const day=entries.filter(e=>e.airdate===date&&(!e.id||!watched[String(e.id)]));const first=day[0];const item={...s,airdate:date,airtime:first?.airtime||s.airtime||'',next_episode:day.length>1?day.length+' episodes':first?.name||''};(byDate[date]||(byDate[date]=[])).push(item)});
+ });
+ if(y===2026&&m===9){
+  for(const [date,name,time,network] of [['2026-10-08',"Special Forces: World's Toughest Test",'21:00','FOX'],['2026-10-07','Abbott Elementary','20:30','ABC']]){
+   const show=shows.find(x=>String(x.name||'').trim()===name);
+   if(fullyWatched(show,date))continue;
+   const a=byDate[date]||(byDate[date]=[]);
+   if(!a.some(x=>String(x.name||'').trim()===name))a.push({...show,id:show?.id||0,name,airdate:date,airtime:time,network,calendarOnly:!show});
+  }
+ }
  Object.keys(byDate).forEach(date=>{const unique=new Map();byDate[date].forEach(item=>{const key=String(item.id||item.name).toLowerCase();if(!unique.has(key))unique.set(key,item)});byDate[date]=Array.from(unique.values()).sort((a,b)=>showStart(a)-showStart(b))});
  let cells='';for(let i=0;i<lead;i++)cells+='<div class="cal-day muted-day"></div>';
  for(let d=1;d<=last.getDate();d++){const key=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'),a=byDate[key]||[];
