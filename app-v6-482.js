@@ -91,6 +91,9 @@ function home(){const tonight=shows.filter(x=>dayDiff(x.airdate)===0).sort((a,b)
 let calendarCursor=new Date();
 function calKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function shiftCalendar(n){calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()+n,1);calendar()}
+let calendarShowWatched=false;
+function toggleCalendarWatched(){calendarShowWatched=!calendarShowWatched;calendar()}
+async function setCalendarWatched(showId,date,mark){try{const id=Number(showId);if(!id)return;const r=await fetch('https://api.tvmaze.com/shows/'+id+'/episodes');if(!r.ok)throw Error();const eps=await r.json();rememberEpisodes(id,eps);const day=eps.filter(e=>e.id&&e.airdate===date);if(!day.length){alert('Episode not found for this date. Use Catch Up.');return}day.forEach(e=>{if(mark)watched[String(e.id)]=true;else delete watched[String(e.id)]});save(K.watched,watched);calendar()}catch{alert('Unable to update episodes right now.')}}
 function calendar(){
  const y=calendarCursor.getFullYear(),m=calendarCursor.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0),lead=first.getDay(),today=calKey(new Date());
  const byDate={};
@@ -99,11 +102,11 @@ function calendar(){
  shows.forEach(s=>{
   const history=(episodeHistory[String(s.id)]||[]).filter(e=>e.airdate);
   const entries=[...history];
-  if(s.airdate&&!entries.some(e=>e.airdate===s.airdate)&&!allWatched(s,s.airdate))entries.push({airdate:s.airdate,airtime:s.airtime||'',name:s.next_episode||''});
-  const dates=[...new Set(entries.filter(e=>!e.id||!watched[String(e.id)]).map(e=>e.airdate))];
+  if(s.airdate&&!entries.some(e=>e.airdate===s.airdate)&&(!allWatched(s,s.airdate)||calendarShowWatched))entries.push({airdate:s.airdate,airtime:s.airtime||'',name:s.next_episode||''});
+  const dates=[...new Set(entries.filter(e=>calendarShowWatched||!e.id||!watched[String(e.id)]).map(e=>e.airdate))];
   dates.forEach(date=>{
-   if(allWatched(s,date))return;
-   const remaining=entries.filter(e=>e.airdate===date&&(!e.id||!watched[String(e.id)]));
+   if(allWatched(s,date)&&!calendarShowWatched)return;
+   const remaining=entries.filter(e=>e.airdate===date&&(calendarShowWatched||!e.id||!watched[String(e.id)]));
    if(!remaining.length)return;
    const first=remaining[0];
    (byDate[date]||(byDate[date]=[])).push({...s,airdate:date,airtime:first.airtime||s.airtime||'',next_episode:remaining.length>1?remaining.length+' episodes':first.name||''});
@@ -112,7 +115,7 @@ function calendar(){
  if(y===2026&&m===9){
   for(const [date,name,time,network] of [['2026-10-08',"Special Forces: World's Toughest Test",'21:00','FOX'],['2026-10-07','Abbott Elementary','20:30','ABC']]){
    const show=shows.find(x=>String(x.name||'').trim()===name);
-   if(!show||allWatched(show,date))continue;
+   if(!show||(allWatched(show,date)&&!calendarShowWatched))continue;
    const a=byDate[date]||(byDate[date]=[]);
    if(!a.some(x=>String(x.name||'').trim()===name))a.push({...show,airdate:date,airtime:time,network});
   }
@@ -120,9 +123,9 @@ function calendar(){
  Object.keys(byDate).forEach(date=>{const unique=new Map();byDate[date].forEach(item=>{const key=String(item.id||item.name).toLowerCase();if(!unique.has(key))unique.set(key,item)});byDate[date]=Array.from(unique.values()).sort((a,b)=>showStart(a)-showStart(b))});
  let cells='';for(let i=0;i<lead;i++)cells+='<div class="cal-day muted-day"></div>';
  for(let d=1;d<=last.getDate();d++){const key=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'),a=byDate[key]||[];
-  cells+='<div class="cal-day '+(key===today?'cal-today':'')+'"><div class="cal-num">'+d+(key===today?'<span>Today</span>':'')+'</div><div class="cal-events">'+a.map(x=>'<button '+(x.calendarOnly?'disabled':'onclick="details('+Number(x.id)+')"')+'><b>'+esc(x.name)+'</b><span>'+esc(((String(x.name||'').trim()==="Special Forces: World's Toughest Test"&&x.airdate==='2026-10-08')||(String(x.name||'').trim()==='Abbott Elementary'&&x.airdate==='2026-10-07'))&&hasAired(x)?'Aired':verifiedTime(x)||'')+'</span></button>').join('')+'</div></div>'}
+  cells+='<div class="cal-day '+(key===today?'cal-today':'')+'"><div class="cal-num">'+d+(key===today?'<span>Today</span>':'')+'</div><div class="cal-events">'+a.map(x=>{const eps=episodesOn(x,key),done=eps.length>0&&eps.every(e=>watched[String(e.id)]),eligible=key<=today&&Number(x.id)>0;return '<div><button '+(x.calendarOnly?'disabled':'onclick="details('+Number(x.id)+')"')+'><b>'+esc(x.name)+'</b><span>'+esc(done?'✓ Watched':hasAired(x)?'Aired':verifiedTime(x)||'')+'</span></button>'+(eligible?'<button class="cal-watch-action" onclick="setCalendarWatched('+Number(x.id)+',\''+key+'\','+(!done)+')">'+(done?'Unwatch':'Mark Watched')+'</button>':'')+'</div>'}).join('')+'</div></div>'}
  const pending=shows.filter(x=>!x.airdate);
- V.innerHTML='<div class="cal-head"><div><h2>My Calendar</h2><div class="sub">Your shows, laid out like a real TV schedule.</div></div><div class="cal-controls"><button onclick="shiftCalendar(-1)">‹</button><b>'+first.toLocaleDateString('en-US',{month:'long',year:'numeric'})+'</b><button onclick="shiftCalendar(1)">›</button></div></div><div class="cal-week"><b>Sun</b><b>Mon</b><b>Tue</b><b>Wed</b><b>Thu</b><b>Fri</b><b>Sat</b></div><div class="cal-grid">'+cells+'</div>'+(pending.length?'<h3 class="cal-pending-title">Upcoming — Date Not Announced</h3><div class="cal-pending">'+pending.map(calendarCard).join('')+'</div>':'')
+ V.innerHTML='<div class="cal-head"><div><h2>My Calendar</h2><div class="sub">Your shows, laid out like a real TV schedule.</div></div><div class="cal-controls"><button onclick="shiftCalendar(-1)">‹</button><b>'+first.toLocaleDateString('en-US',{month:'long',year:'numeric'})+'</b><button onclick="shiftCalendar(1)">›</button></div></div><div style="margin:8px 0"><button class="btn" onclick="toggleCalendarWatched()">'+(calendarShowWatched?'Hide watched episodes':'Show watched episodes')+'</button></div><div class="cal-week"><b>Sun</b><b>Mon</b><b>Tue</b><b>Wed</b><b>Thu</b><b>Fri</b><b>Sat</b></div><div class="cal-grid">'+cells+'</div>'+(pending.length?'<h3 class="cal-pending-title">Upcoming — Date Not Announced</h3><div class="cal-pending">'+pending.map(calendarCard).join('')+'</div>':'')
 }function showStart(x){if(!x.airdate)return 9007199254740991;const raw=normalizeBroadcastTime(x.airtime)||normalizeBroadcastTime(VERIFIED_SHOW_TIMES[String(x.name||'').trim()]);const d=raw?new Date(x.airdate+'T'+raw+':00'):new Date(x.airdate+'T23:59:59');return isNaN(d)?9007199254740991:d.getTime()}
 function myshows(){showMyShowsTab('tv')}
 async function showMyShowsTab(tab){
