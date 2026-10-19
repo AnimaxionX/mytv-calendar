@@ -91,7 +91,25 @@ function home(){const tonight=shows.filter(x=>dayDiff(x.airdate)===0).sort((a,b)
 let calendarCursor=new Date();
 function calKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function shiftCalendar(n){calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()+n,1);calendar()}
-async function calendarEpisodeDetails(showId,date){const id=Number(showId);if(!id)return;await details(id);try{const r=await fetch('https://api.tvmaze.com/shows/'+id+'/episodes');if(!r.ok)throw Error();const all=await r.json();rememberEpisodes(id,all);const eps=all.filter(e=>e.id&&e.airdate===date);const section='<section class="card"><div class="title">Episodes · '+esc(mdY(date))+'</div>'+(eps.length?eps.map(e=>'<div style="padding:10px 0"><div class="sub">Season '+e.season+' · Episode '+(e.number??'—')+' · '+esc(e.name||'Episode')+'</div><button class="btn" style="margin-top:8px" onclick="setCalendarEpisodeWatched('+id+','+Number(e.id)+',\''+date+'\')">'+(watched[String(e.id)]?'Unwatch':'Mark Watched')+'</button></div>').join(''):'<div class="sub">No episode details available for this date.</div>')+'</section>';const w=document.getElementById('wtw');if(w)w.previousElementSibling?.insertAdjacentHTML('beforebegin',section)}catch{const w=document.getElementById('wtw');if(w)w.previousElementSibling?.insertAdjacentHTML('beforebegin','<div class="card">Episode details unavailable right now.</div>')}}
+async function calendarEpisodeDetails(showId,date){
+ const id=Number(showId);if(!id)return;
+ await details(id);
+ const where=document.getElementById('wtw');
+ if(!where)return;
+ const holder=document.createElement('section');holder.className='calendar-episode-details';
+ where.previousElementSibling?.insertAdjacentElement('beforebegin',holder);
+ holder.innerHTML='<div class="card"><div class="sub">Loading episodes for '+esc(mdY(date))+'…</div></div>';
+ try{
+  const response=await fetch('https://api.tvmaze.com/shows/'+id+'/episodes');
+  if(!response.ok)throw Error('Episode list unavailable');
+  const all=await response.json();rememberEpisodes(id,all);
+  const eps=all.filter(e=>e.id&&e.airdate===date).sort((a,b)=>Number(a.number||0)-Number(b.number||0));
+  holder.innerHTML='<h3>Episodes aired '+esc(mdY(date))+'</h3>'+(eps.length?eps.map(e=>{
+   const done=!!watched[String(e.id)];
+   return '<div class="card"><div class="title">Season '+e.season+' · Episode '+(e.number??'—')+' • '+esc(e.name||'Episode')+'</div><div class="sub">'+esc(mdY(e.airdate))+(e.runtime?' • '+e.runtime+' min':'')+'</div><button class="btn" style="margin-top:10px;'+(done?'background:#19a974':'')+'" onclick="setCalendarEpisodeWatched('+id+','+Number(e.id)+',\''+date+'\')">'+(done?'✓ Watched':'Mark Watched')+'</button></div>'
+  }).join(''):'<div class="card"><div class="sub">No episode details available for this date.</div></div>');
+ }catch{holder.innerHTML='<div class="card"><div class="sub">Episode details unavailable right now.</div></div>'}
+}
 function setCalendarEpisodeWatched(showId,episodeId,date){const key=String(episodeId);if(watched[key])delete watched[key];else watched[key]=true;save(K.watched,watched);calendarEpisodeDetails(showId,date)}
 function calendar(){
  const y=calendarCursor.getFullYear(),m=calendarCursor.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0),lead=first.getDay(),today=calKey(new Date());
@@ -210,7 +228,7 @@ function setNotificationPref(k,v){const p=notificationPrefs();p[k]=!!v;save('myt
 async function settings(){
  const plan=await getCurrentPlan(),level=PLAN_LEVELS[plan]||0,p=notificationPrefs();
  const row=(k,label,desc,need=0,badge='Free')=>{const locked=level<need;return '<label class="card" style="display:flex;align-items:center;justify-content:space-between;gap:14px;'+(locked?'opacity:.5;':'')+'"><div><div class="title">'+label+(locked?' <span class="sub">• '+badge+'</span>':'')+'</div><div class="sub">'+desc+'</div></div><input type="checkbox" '+(!locked&&p[k]?'checked':'')+' '+(locked?'disabled':'onchange="setNotificationPref(\''+k+'\',this.checked)"')+' style="width:22px;height:22px;flex:0 0 auto"></label>'};
- V.innerHTML='<h2>Settings</h2><div class="card"><div class="title">Push Notifications</div><div class="sub">Enable notifications, then choose the reminders included with your plan.</div><button type="button" id="push-toggle" class="btn" data-push="on" style="margin-top:12px">Enable Push Notifications</button><div id="push-msg" class="sub" style="margin-top:10px"></div></div><div class="title" style="margin:18px 0 10px">Notification Preferences</div>'+row('showToday','📺 Show Airing Today','Remind me when a followed show has a new episode today.',0,'Free')+row('movieToday','🎬 Movie Release Today','Remind me when a movie in my Watchlist releases today.',1,'Calendar+')+row('dateChanges','📅 Release Date Changes','Tell me when a followed show or movie release date changes.',1,'Calendar+')+row('showSoon','⏰ Show Starting Soon','Remind me shortly before a followed show starts.',2,'Pro')+row('newSeason','✨ New Season / Premiere','Tell me when a followed show begins a new season.',2,'Pro')+row('appUpdates','🔔 My TV Calendar Updates','Important app and account announcements.',0,'Free')+'<div class="card">My TV Calendar V6.4.88</div>';
+ V.innerHTML='<h2>Settings</h2><div class="card"><div class="title">Push Notifications</div><div class="sub">Enable notifications, then choose the reminders included with your plan.</div><button type="button" id="push-toggle" class="btn" data-push="on" style="margin-top:12px">Enable Push Notifications</button><div id="push-msg" class="sub" style="margin-top:10px"></div></div><div class="title" style="margin:18px 0 10px">Notification Preferences</div>'+row('showToday','📺 Show Airing Today','Remind me when a followed show has a new episode today.',0,'Free')+row('movieToday','🎬 Movie Release Today','Remind me when a movie in my Watchlist releases today.',1,'Calendar+')+row('dateChanges','📅 Release Date Changes','Tell me when a followed show or movie release date changes.',1,'Calendar+')+row('showSoon','⏰ Show Starting Soon','Remind me shortly before a followed show starts.',2,'Pro')+row('newSeason','✨ New Season / Premiere','Tell me when a followed show begins a new season.',2,'Pro')+row('appUpdates','🔔 My TV Calendar Updates','Important app and account announcements.',0,'Free')+'<div class="card">My TV Calendar V6.4.89</div>';
  renderPushButton();
 }
 const BILLING_PORTAL='https://billing.stripe.com/p/login/8x24gycwP7vC7kT1Aeco000';
