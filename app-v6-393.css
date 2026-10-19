@@ -263,3 +263,6 @@ input,select,textarea,button{max-width:100%;min-width:0}
 @keyframes welcomeSweep{to{transform:rotate(360deg)}}
 @keyframes welcomeExit{to{opacity:0;visibility:hidden;pointer-events:none;transform:scale(1.018)}}
 @media(prefers-reduced-motion:reduce){.welcome-screen{animation:welcomeExit .2s linear 1s forwards}.welcome-screen:before,.welcome-orbit,.welcome-card,.welcome-icon,.welcome-kicker,.welcome-brand,.welcome-line,.welcome-copy{animation:none!important}}
+
+/* Calendar episode watch controls */
+.cal-events .cal-watch-action{display:block;width:100%;margin:3px 0 7px;padding:5px 3px;border:1px solid #c9d4e5;border-radius:6px;background:#f4f7fc;color:#263b5a;font-size:10px;font-weight:700;cursor:pointer;min-height:26px}
