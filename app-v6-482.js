@@ -104,7 +104,7 @@ async function calendarEpisodeDetails(showId,date){
   if(!response.ok)throw Error('Episode list unavailable');
   const all=await response.json();rememberEpisodes(id,all);
   const eps=all.filter(e=>e.id&&e.airdate===date).sort((a,b)=>Number(a.number||0)-Number(b.number||0));
-  holder.innerHTML='<h3>Episodes aired '+esc(mdY(date))+'</h3>'+(eps.length?eps.map(e=>{
+  holder.innerHTML='<h3>Episodes aired</h3>'+(eps.length?eps.map(e=>{
    const done=!!watched[String(e.id)];
    return '<div class="card"><div class="title">Season '+e.season+' · Episode '+(e.number??'—')+' • '+esc(e.name||'Episode')+'</div><div class="sub">'+(e.runtime?e.runtime+' min':'')+'</div><button class="btn" style="margin-top:10px;'+(done?'background:#19a974':'')+'" onclick="setCalendarEpisodeWatched('+id+','+Number(e.id)+',\''+date+'\')">'+(done?'✓ Watched':'Mark Watched')+'</button></div>'
   }).join(''):'<div class="card"><div class="sub">No episode details available for this date.</div></div>');
