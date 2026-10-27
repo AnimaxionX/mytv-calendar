@@ -7,8 +7,8 @@ android {
         applicationId 'com.animaxionx.mytvcalendar'
         minSdk 26
         targetSdk 35
-        versionCode 6493
-        versionName '6.4.92'
+        versionCode 6494
+        versionName '6.4.93'
     }
     compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
 }
