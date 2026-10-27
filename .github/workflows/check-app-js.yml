@@ -1,0 +1,18 @@
+name: Validate My TV Calendar JavaScript
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'app-v6-490.js'
+      - '.github/workflows/check-app-js.yml'
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate application JavaScript syntax
+        run: node --check app-v6-490.js
