@@ -1,0 +1,14 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.animaxionx.mytvcalendar'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'com.animaxionx.mytvcalendar'
+        minSdk 26
+        targetSdk 35
+        versionCode 6493
+        versionName '6.4.92'
+    }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
