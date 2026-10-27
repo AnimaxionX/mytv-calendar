@@ -1,6 +1,5 @@
-const CACHE='mytv-v6.4.52';
-self.addEventListener('install',()=>self.skipWaiting());
-self.addEventListener('activate',e=>e.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)));await self.clients.claim()})()));
-self.addEventListener('fetch',e=>{if(e.request.mode==='navigate'){e.respondWith(fetch(e.request,{cache:'no-store'}).catch(()=>caches.match(e.request)));return}e.respondWith(fetch(e.request,{cache:'no-store'}).catch(()=>caches.match(e.request)))});
-self.addEventListener('push',e=>{let d={title:'My TV Calendar',body:'You have a new TV update.',url:'./?v=6.4.52&source=pwa'};try{d={...d,...e.data.json()}}catch{}e.waitUntil(self.registration.showNotification(d.title,{body:d.body,tag:d.tag||'mytv-update',data:{url:d.url||'./?v=6.4.52&source=pwa'}}))});
-self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(ws=>{for(const w of ws){if('focus'in w){w.navigate(e.notification.data?.url||'./?v=6.4.52&source=pwa');return w.focus()}}return clients.openWindow(e.notification.data?.url||'./?v=6.4.52&source=pwa')}))});
+const CACHE='mytv-shell-v6.4.92';
+const SHELL=['./','./index.html','./manifest.webmanifest','./mytv-icon.svg','./app-v6-490.js','./app-v6-393.css'];
+self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).catch(()=>{}));self.skipWaiting()});
+self.addEventListener('activate',event=>{event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(key=>key.startsWith('mytv-shell-')&&key!==CACHE).map(key=>caches.delete(key)));await self.clients.claim()})())});
+self.addEventListener('fetch',event=>{if(event.request.method!=='GET'||new URL(event.request.url).origin!==self.location.origin)return;event.respondWith(fetch(event.request,{cache:'no-store'}).then(response=>{if(response.ok){const copy=response.clone();event.waitUntil(caches.open(CACHE).then(cache=>cache.put(event.request,copy)).catch(()=>{}))}return response}).catch(()=>caches.match(event.request).then(hit=>hit||Response.error())))});
