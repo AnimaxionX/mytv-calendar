@@ -7,8 +7,10 @@ android {
         applicationId 'com.animaxionx.mytvcalendar.install'
         minSdk 26
         targetSdk 34
-        versionCode 6496
-        versionName '6.4.95'
+        versionCode 6497
+        versionName '6.4.96'
     }
     compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
 }
+
+dependencies { implementation 'com.onesignal:OneSignal:5.9.2' }
