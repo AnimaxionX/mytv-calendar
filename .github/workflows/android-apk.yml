@@ -7,7 +7,7 @@ on:
       - 'android-app/**'
       - '.github/workflows/android-apk.yml'
 permissions:
-  contents: read
+  contents: write
 jobs:
   apk:
     runs-on: ubuntu-latest
@@ -42,3 +42,14 @@ jobs:
           name: MyTVCalendar-Android-APK
           path: android-app/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
+      - name: Publish direct APK download
+        run: |
+          mkdir -p ../downloads
+          cp app/build/outputs/apk/debug/app-debug.apk ../downloads/MyTVCalendar-V6.4.95.apk
+          cd ..
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add downloads/MyTVCalendar-V6.4.95.apk
+          git commit -m "Publish direct Android APK V6.4.95"
+          git pull --rebase origin main
+          git push origin HEAD:main
