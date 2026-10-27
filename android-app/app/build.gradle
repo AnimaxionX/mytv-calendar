@@ -4,11 +4,11 @@ android {
     namespace 'com.animaxionx.mytvcalendar'
     compileSdk 35
     defaultConfig {
-        applicationId 'com.animaxionx.mytvcalendar.install'
+        applicationId 'com.animaxionx.mytvcalendar.v6499'
         minSdk 26
         targetSdk 34
-        versionCode 6499
-        versionName '6.4.98'
+        versionCode 6500
+        versionName '6.4.99'
     }
     compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
 }
