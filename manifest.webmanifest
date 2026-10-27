@@ -1,10 +1,23 @@
 {
   "name": "My TV Calendar",
   "short_name": "My TV Calendar",
-  "start_url": "./?v=6.4.52&source=pwa",
-  "scope": "./",
+  "id": "/mytv-calendar/",
+  "start_url": "/mytv-calendar/?source=pwa",
+  "scope": "/mytv-calendar/",
   "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
   "background_color": "#ffffff",
   "theme_color": "#2f98ef",
-  "description": "Stay updated with the shows you love."
+  "description": "Stay updated with the shows you love.",
+  "icons": [
+    {
+      "src": "./mytv-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }
