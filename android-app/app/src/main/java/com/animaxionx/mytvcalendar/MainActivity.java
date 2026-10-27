@@ -104,7 +104,7 @@ public class MainActivity extends Activity {
                 return false;
             }
         });
-        if(state!=null)webView.restoreState(state);else webView.loadUrl(HOME);
+        webView.loadUrl(HOME);
     }
     @Override protected void onSaveInstanceState(Bundle out) { webView.saveState(out); super.onSaveInstanceState(out); }
     @Override public void onBackPressed() { if(webView.canGoBack())webView.goBack();else super.onBackPressed(); }
