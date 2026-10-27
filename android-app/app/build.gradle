@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId 'com.animaxionx.mytvcalendar.install'
         minSdk 26
-        targetSdk 35
+        targetSdk 34
         versionCode 6496
         versionName '6.4.95'
     }
