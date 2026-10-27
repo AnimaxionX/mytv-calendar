@@ -9,6 +9,9 @@ import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
+import android.webkit.JavascriptInterface;
+import com.onesignal.OneSignal;
+import com.onesignal.Continue;
 import android.webkit.WebViewClient;
 import android.webkit.WebSettings;
 import android.view.View;
@@ -40,6 +43,24 @@ public class MainActivity extends Activity {
         settings.setMediaPlaybackRequiresUserGesture(false);
         CookieManager.getInstance().setAcceptCookie(true);
         CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
+        webView.addJavascriptInterface(new Object(){
+            @JavascriptInterface public void requestPermission(){
+                runOnUiThread(()->OneSignal.getNotifications().requestPermission(true,Continue.none()));
+            }
+            @JavascriptInterface public boolean isPermissionGranted(){
+                return OneSignal.getNotifications().getPermission();
+            }
+            @JavascriptInterface public String subscriptionId(){
+                String id=OneSignal.getUser().getPushSubscription().getId();
+                return id==null?"":id;
+            }
+            @JavascriptInterface public void optOut(){
+                runOnUiThread(()->OneSignal.getUser().getPushSubscription().optOut());
+            }
+            @JavascriptInterface public void optIn(){
+                runOnUiThread(()->OneSignal.getUser().getPushSubscription().optIn());
+            }
+        },"MyTVNative");
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient() {
             @Override public void onPageFinished(WebView view, String url) {
