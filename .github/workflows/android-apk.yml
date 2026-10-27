@@ -28,6 +28,17 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
+      - name: Generate Android launcher icon from primary logo
+        run: |
+          python3 -m pip install --quiet cairosvg
+          python3 - <<'PY'
+          import cairosvg, pathlib
+          source=pathlib.Path('../mytv-icon.svg').read_bytes()
+          for density,size in [('mdpi',48),('hdpi',72),('xhdpi',96),('xxhdpi',144),('xxxhdpi',192)]:
+              folder=pathlib.Path('app/src/main/res/mipmap-'+density)
+              folder.mkdir(parents=True,exist_ok=True)
+              cairosvg.svg2png(bytestring=source,write_to=str(folder/'ic_launcher.png'),output_width=size,output_height=size)
+          PY
       - name: Build installable debug APK
         run: gradle --no-daemon assembleDebug
       - name: Validate APK before distribution
@@ -47,13 +58,13 @@ jobs:
           cd ..
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          cp android-app/app/build/outputs/apk/debug/app-debug.apk /tmp/MyTVCalendar-V6.4.97.apk
+          cp android-app/app/build/outputs/apk/debug/app-debug.apk /tmp/MyTVCalendar-V6.4.98.apk
           git fetch origin main
           git reset --hard origin/main
           mkdir -p downloads
-          cp /tmp/MyTVCalendar-V6.4.97.apk downloads/MyTVCalendar-V6.4.97.apk
-          git add downloads/MyTVCalendar-V6.4.97.apk
+          cp /tmp/MyTVCalendar-V6.4.98.apk downloads/MyTVCalendar-V6.4.98.apk
+          git add downloads/MyTVCalendar-V6.4.98.apk
           if ! git diff --cached --quiet; then
-            git commit -m "Publish direct Android APK V6.4.97"
+            git commit -m "Publish direct Android APK V6.4.98"
             git push origin HEAD:main
           fi
