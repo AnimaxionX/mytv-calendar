@@ -281,3 +281,15 @@ input,select,textarea,button{max-width:100%;min-width:0}
   .cal-pending{margin-bottom:4px!important}
   .mobile-nav{bottom:0!important}
 }
+
+/* V6.4.104: one bottom safe area for every tab, not two */
+@media(max-width:720px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))!important}
+  .shell{min-height:0!important;padding-bottom:0!important;margin-bottom:0!important}
+  .content{padding-bottom:8px!important;margin-bottom:0!important;min-height:0!important}
+  .content> :last-child{margin-bottom:0!important}
+  .content>section:last-child,.content>.card:last-child,.content>.home-grid:last-child,
+  .content>.cal-grid:last-child,.content>.empty:last-child{margin-bottom:0!important}
+  .mobile-nav{bottom:0!important;height:calc(72px + env(safe-area-inset-bottom,0px))!important}
+}
