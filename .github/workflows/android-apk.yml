@@ -58,13 +58,13 @@ jobs:
           cd ..
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          cp android-app/app/build/outputs/apk/debug/app-debug.apk /tmp/MyTVCalendar-V6.4.102.apk
+          cp android-app/app/build/outputs/apk/debug/app-debug.apk /tmp/MyTVCalendar-V6.4.103.apk
           git fetch origin main
           git reset --hard origin/main
           mkdir -p downloads
-          cp /tmp/MyTVCalendar-V6.4.102.apk downloads/MyTVCalendar-V6.4.102.apk
-          git add downloads/MyTVCalendar-V6.4.102.apk
+          cp /tmp/MyTVCalendar-V6.4.103.apk downloads/MyTVCalendar-V6.4.103.apk
+          git add downloads/MyTVCalendar-V6.4.103.apk
           if ! git diff --cached --quiet; then
-            git commit -m "Publish direct Android APK V6.4.102"
+            git commit -m "Publish direct Android APK V6.4.103"
             git push origin HEAD:main
           fi
