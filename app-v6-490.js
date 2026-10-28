@@ -78,8 +78,16 @@ const CLOUD_KEYS=[K.shows,K.watched,K.prefs,'mytv-v6-favorites','mytv-v6-tmdb-sa
 let cloudBackupTimer=null,cloudRestoring=false,cloudUserId=null;
 function localCloudPayload(){const data={};for(const k of CLOUD_KEYS){const raw=localStorage.getItem(k);if(raw!==null){try{data[k]=JSON.parse(raw)}catch{}}}return data}
 function scheduleCloudBackup(){if(cloudRestoring||!cloudUserId)return;clearTimeout(cloudBackupTimer);cloudBackupTimer=setTimeout(()=>cloudBackupNow().catch(e=>console.warn('Cloud backup unavailable',e)),1200)}
-async function cloudBackupNow(){if(!SB||!cloudUserId||cloudRestoring)return false;const payload=localCloudPayload();const {error}=await SB.from('user_calendar_backups').upsert({user_id:cloudUserId,payload,updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error)throw error;return true}
-async function backupCalendarOnDemand(){const el=document.getElementById('cloud-backup-status');if(el)el.textContent='Saving to your account…';try{const user=await getSessionUser();if(!user){if(el)el.textContent='Sign in to save your calendar to the cloud.';return}cloudUserId=user.id;await cloudBackupNow();if(el)el.textContent='Cloud backup saved successfully.'}catch(e){if(el)el.textContent='Backup failed. Your data is still saved on this device.';console.warn('Manual backup failed',e)}}
+function cloudPayloadHasData(p){return !!p&&Object.values(p).some(v=>Array.isArray(v)?v.length>0:v&&typeof v==='object'?Object.keys(v).length>0:v!==null&&v!==undefined&&v!=='')}
+async function cloudBackupNow(){
+ if(!SB||!cloudUserId||cloudRestoring)return false;
+ const payload=localCloudPayload();
+ if(!cloudPayloadHasData(payload))throw Error('No saved shows or preferences found on this device. Empty backups are blocked.');
+ const {error}=await SB.from('user_calendar_backups').upsert({user_id:cloudUserId,payload,updated_at:new Date().toISOString()},{onConflict:'user_id'});
+ if(error)throw error;
+ return true
+}
+async function backupCalendarOnDemand(){const el=document.getElementById('cloud-backup-status');if(el)el.textContent='Saving to your account…';try{const user=await getSessionUser();if(!user){if(el)el.textContent='Sign in to save your calendar to the cloud.';return}cloudUserId=user.id;await cloudBackupNow();if(el)el.textContent='Cloud backup saved successfully: '+Object.keys(localCloudPayload()).length+' data categories.'}catch(e){if(el)el.textContent='Backup failed. Your data is still saved on this device.';console.warn('Manual backup failed',e)}}
 async function restoreCloudBackup(){
  if(!SB)return false;
  const {data:{user},error:authError}=await SB.auth.getUser();
@@ -88,7 +96,7 @@ async function restoreCloudBackup(){
  const {data,error}=await SB.from('user_calendar_backups').select('payload').eq('user_id',user.id).maybeSingle();
  if(error){console.warn('Cloud restore unavailable',error);return false}
  const remote=data?.payload;
- if(remote&&typeof remote==='object'){
+ if(cloudPayloadHasData(remote)){
   cloudRestoring=true;
   try{
    for(const k of CLOUD_KEYS){if(Object.prototype.hasOwnProperty.call(remote,k))localStorage.setItem(k,JSON.stringify(remote[k]))}
@@ -99,7 +107,7 @@ async function restoreCloudBackup(){
   }finally{cloudRestoring=false}
  }else{
   const payload=localCloudPayload();
-  if(Object.keys(payload).length)await cloudBackupNow();
+  if(cloudPayloadHasData(payload))await cloudBackupNow();
  }
  return true
 }
@@ -364,7 +372,7 @@ async function signInAccount(){
   const {data,error}=await SB.auth.signInWithPassword({email:e,password:p});
   if(error){if(m)m.textContent=error.message;return}
   if(!data?.session){if(m)m.textContent='Sign in was not completed. Check your email confirmation and try again.';return}
-  PLAN_CACHE.at=0;if(m)m.textContent='Signed in successfully.';await getCurrentPlan(true);await reconcileNotificationRegistration();await go('home');
+  PLAN_CACHE.at=0;if(m)m.textContent='Signed in. Restoring your saved calendar…';await restoreCloudBackup();await getCurrentPlan(true);if(!window.MyTVNative)reconcileNotificationRegistration().catch(()=>{});await go('home');
  }catch(err){if(m)m.textContent='Could not sign in. '+(err?.message||'Please try again.')}
  finally{if(b){b.disabled=false;b.textContent='Sign In'}}
 }
