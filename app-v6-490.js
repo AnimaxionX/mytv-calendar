@@ -73,7 +73,35 @@ async function enablePush(){if(window.MyTVNative)return nativePushToggle(true);
 }
 async function disablePush(){if(window.MyTVNative)return nativePushToggle(false);const m=document.getElementById('push-msg');try{const os=await oneSignalReady();const sid=os.User.PushSubscription.id||null;await os.User.PushSubscription.optOut();localStorage.removeItem('mytv-push-enabled');await notificationSync({type:'register',subscription_id:sid,enabled:false});await syncNotificationPrefs();if(m)m.textContent='Push notifications are turned off on this device.';renderPushButton()}catch(e){if(m)m.textContent='Could not turn off notifications: '+e.message}}
 async function renderPushButton(){const b=document.getElementById('push-toggle');if(!b)return;if(window.MyTVNative){const active=localStorage.getItem('mytv-push-enabled')==='1'&&MyTVNative.isPermissionGranted()&&!!MyTVNative.subscriptionId();b.textContent=active?'Turn Off Push Notifications':'Enable Push Notifications';b.dataset.push=active?'off':'on';b.disabled=false;return}const saved=localStorage.getItem('mytv-push-enabled')==='1';let on=saved;b.disabled=true;b.textContent=saved?'Turn Off Push Notifications':'Checking Push Notifications…';try{const os=await oneSignalReady();let sid=null;for(let i=0;i<12&&!sid;i++){sid=os.User?.PushSubscription?.id||null;if(!sid)await new Promise(r=>setTimeout(r,250))}const live=Notification.permission==='granted'&&!!os.User?.PushSubscription?.optedIn&&!!sid;if(live){on=true;localStorage.setItem('mytv-push-enabled','1');await notificationSync({type:'register',subscription_id:sid,enabled:true});await syncNotificationPrefs()}else if(Notification.permission==='denied'){on=false;localStorage.removeItem('mytv-push-enabled')}}catch(e){console.warn('Push state check unavailable; preserving saved choice',e)}b.textContent=on?'Turn Off Push Notifications':'Enable Push Notifications';b.dataset.push=on?'off':'on';b.disabled=false}
-const K={shows:'mytv-v5-shows',watched:'mytv-v5-watched',prefs:'mytv-v5-prefs'};const $=s=>document.querySelector(s);const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));let shows=load(K.shows,[]),watched=load(K.watched,{}),prefs=load(K.prefs,{}),favorites=load('mytv-v6-favorites',{}),tmdbSaved=load('mytv-v6-tmdb-saved',[]),movieWatchlist=load('mytv-v6-movie-watchlist',[]),route='home';const V=$('#view');
+const K={shows:'mytv-v5-shows',watched:'mytv-v5-watched',prefs:'mytv-v5-prefs'};const $=s=>document.querySelector(s);const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};const save=(k,v)=>{localStorage.setItem(k,JSON.stringify(v));if(typeof scheduleCloudBackup==='function')scheduleCloudBackup()};let shows=load(K.shows,[]),watched=load(K.watched,{}),prefs=load(K.prefs,{}),favorites=load('mytv-v6-favorites',{}),tmdbSaved=load('mytv-v6-tmdb-saved',[]),movieWatchlist=load('mytv-v6-movie-watchlist',[]),route='home';const V=$('#view');
+const CLOUD_KEYS=[K.shows,K.watched,K.prefs,'mytv-v6-favorites','mytv-v6-tmdb-saved','mytv-v6-movie-watchlist','mytv-v6-episode-history'];
+let cloudBackupTimer=null,cloudRestoring=false,cloudUserId=null;
+function localCloudPayload(){const data={};for(const k of CLOUD_KEYS){const raw=localStorage.getItem(k);if(raw!==null){try{data[k]=JSON.parse(raw)}catch{}}}return data}
+function scheduleCloudBackup(){if(cloudRestoring||!cloudUserId)return;clearTimeout(cloudBackupTimer);cloudBackupTimer=setTimeout(()=>cloudBackupNow().catch(e=>console.warn('Cloud backup unavailable',e)),1200)}
+async function cloudBackupNow(){if(!SB||!cloudUserId||cloudRestoring)return false;const payload=localCloudPayload();const {error}=await SB.from('user_calendar_backups').upsert({user_id:cloudUserId,payload,updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error)throw error;return true}
+async function restoreCloudBackup(){
+ if(!SB)return false;
+ const {data:{user},error:authError}=await SB.auth.getUser();
+ if(authError||!user){cloudUserId=null;return false}
+ cloudUserId=user.id;
+ const {data,error}=await SB.from('user_calendar_backups').select('payload').eq('user_id',user.id).maybeSingle();
+ if(error){console.warn('Cloud restore unavailable',error);return false}
+ const remote=data?.payload;
+ if(remote&&typeof remote==='object'){
+  cloudRestoring=true;
+  try{
+   for(const k of CLOUD_KEYS){if(Object.prototype.hasOwnProperty.call(remote,k))localStorage.setItem(k,JSON.stringify(remote[k]))}
+   shows=load(K.shows,[]);watched=load(K.watched,{});prefs=load(K.prefs,{});
+   favorites=load('mytv-v6-favorites',{});tmdbSaved=load('mytv-v6-tmdb-saved',[]);
+   movieWatchlist=load('mytv-v6-movie-watchlist',[]);
+   episodeHistory=load('mytv-v6-episode-history',{});
+  }finally{cloudRestoring=false}
+ }else{
+  const payload=localCloudPayload();
+  if(Object.keys(payload).length)await cloudBackupNow();
+ }
+ return true
+}
 const nav=[['home','⌂','Home'],['calendar','▦','My Calendar'],['shows','♥','My Shows'],['discover','⌕','Discover'],['more','•••','More']];$('#mobileNav').innerHTML=nav.map(x=>'<button data-go="'+x[0]+'"><b>'+x[1]+'</b><span>'+x[2]+'</span></button>').join('');$('#side').innerHTML=[...nav.slice(0,4),['catchup','✓','Catch Up'],['night','★','Build My Night'],['settings','⚙','Settings'],['subscriptions','◈','Subscriptions']].map(x=>'<button data-go="'+x[0]+'" onclick="go(\''+x[0]+'\')">'+x[2]+'</button>').join('');document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(b.dataset.go)});document.addEventListener('click',e=>{const b=e.target.closest('[data-push]');if(!b)return;e.preventDefault();if(b.dataset.push==='on')enablePush();else if(b.dataset.push==='off')disablePush();});
 function animatePageMotion(){requestAnimationFrame(()=>{if(!V||!V.animate)return;V.animate([{opacity:0,transform:'translateY(18px) scale(.985)'},{opacity:1,transform:'translateY(0) scale(1)'}],{duration:520,easing:'cubic-bezier(.2,.8,.2,1)',fill:'both'})})}
 async function go(r){const user=await getSessionUser();const privateRoutes=['home','calendar','shows','catchup','night'];if(!user&&privateRoutes.includes(r)&&r!=='home'){route='subscriptions';document.querySelectorAll('[data-go]').forEach(x=>x.classList.toggle('active',x.dataset.go==='subscriptions'));await subscriptions();animatePageMotion();scrollTo(0,0);return}route=r;document.querySelectorAll('[data-go]').forEach(x=>x.classList.toggle('active',x.dataset.go===r));const fn=({home,calendar,shows:myshows,discover,more,catchup,night,settings,subscriptions,upgrade:subscriptions}[r]||home);await fn();animatePageMotion();scrollTo(0,0)}
@@ -377,4 +405,4 @@ const qs=new URLSearchParams(location.search);
 let recoveryMode=false;
 if(SB)SB.auth.onAuthStateChange((event,session)=>{if(event==='PASSWORD_RECOVERY'){recoveryMode=true;passwordRecoveryScreen()}});
 (async()=>{if(SB){try{const {data}=await SB.auth.getSession();const h=new URLSearchParams(location.hash.replace(/^#/,''));if((h.get('type')==='recovery'||qs.get('type')==='recovery')&&data?.session){recoveryMode=true;passwordRecoveryScreen();return}}catch{}}
-if(!recoveryMode){try{if(qs.get('payment')==='success'||qs.get('route')==='subscriptions')await go('subscriptions');else await go('home')}catch(e){console.error('Startup route failed',e);home()}Promise.resolve().then(()=>refreshFollowedSchedules()).catch(e=>console.warn('Schedule refresh failed',e));if(!window.MyTVNative)Promise.resolve().then(()=>reconcileNotificationRegistration()).catch(e=>console.warn('Push reconciliation failed',e))}})();
+if(!recoveryMode){try{await restoreCloudBackup()}catch(e){console.warn('Cloud restore failed; local data preserved',e)}try{if(qs.get('payment')==='success'||qs.get('route')==='subscriptions')await go('subscriptions');else await go('home')}catch(e){console.error('Startup route failed',e);home()}Promise.resolve().then(()=>refreshFollowedSchedules()).catch(e=>console.warn('Schedule refresh failed',e));if(!window.MyTVNative)Promise.resolve().then(()=>reconcileNotificationRegistration()).catch(e=>console.warn('Push reconciliation failed',e))}})();
