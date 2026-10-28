@@ -76,7 +76,7 @@ public class MainActivity extends Activity {
                         + "c.textContent='html.android-app,html.android-app body{width:100%;max-width:100%;overflow-x:hidden}'"
                         + "+'html.android-app .shell{display:block!important;min-height:0!important}'"
                         + "+'html.android-app .side{display:none!important}'"
-                        + "+'html.android-app .content{width:100%!important;max-width:100%!important;min-width:0!important;padding:16px 12px 76px!important;overflow-x:hidden!important}'"
+                        + "+'html.android-app .content{width:100%!important;max-width:100%!important;min-width:0!important;padding:16px 12px 8px!important;overflow-x:hidden!important}'"
                         + "+'html.android-app .top{height:72px!important;padding:9px 10px!important;position:sticky!important;top:0!important;z-index:100!important}'"
                         + "+'html.android-app .word{font-size:17px!important}'"
                         + "+'html.android-app .tag{font-size:11px!important}'"
