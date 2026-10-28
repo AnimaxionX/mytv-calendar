@@ -403,6 +403,6 @@ async function startCheckout(plan){
 }
 const qs=new URLSearchParams(location.search);
 let recoveryMode=false;
-if(SB)SB.auth.onAuthStateChange((event,session)=>{if(event==='PASSWORD_RECOVERY'){recoveryMode=true;passwordRecoveryScreen()}});
+if(SB)SB.auth.onAuthStateChange((event,session)=>{if(event==='PASSWORD_RECOVERY'){recoveryMode=true;passwordRecoveryScreen()}else if(event==='SIGNED_IN'&&session?.user&&session.user.id!==cloudUserId){setTimeout(async()=>{try{await restoreCloudBackup();if(route==='home')home();else if(route==='calendar')calendar();else if(route==='shows')myshows()}catch(e){console.warn('Sign-in restore failed',e)}},0)}else if(event==='SIGNED_OUT'){cloudUserId=null;clearTimeout(cloudBackupTimer)}});
 (async()=>{if(SB){try{const {data}=await SB.auth.getSession();const h=new URLSearchParams(location.hash.replace(/^#/,''));if((h.get('type')==='recovery'||qs.get('type')==='recovery')&&data?.session){recoveryMode=true;passwordRecoveryScreen();return}}catch{}}
 if(!recoveryMode){try{await restoreCloudBackup()}catch(e){console.warn('Cloud restore failed; local data preserved',e)}try{if(qs.get('payment')==='success'||qs.get('route')==='subscriptions')await go('subscriptions');else await go('home')}catch(e){console.error('Startup route failed',e);home()}Promise.resolve().then(()=>refreshFollowedSchedules()).catch(e=>console.warn('Schedule refresh failed',e));if(!window.MyTVNative)Promise.resolve().then(()=>reconcileNotificationRegistration()).catch(e=>console.warn('Push reconciliation failed',e))}})();
